@@ -18,6 +18,10 @@ public class UserService implements UserDetailsService {
 
     private Map<String, User> repo = new HashMap<>();
 
+    User getLoggedInUser() {
+        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    }
+
     @Override
     public User loadUserByUsername(String username)
             throws UsernameNotFoundException {
