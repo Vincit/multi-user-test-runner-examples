@@ -1,7 +1,9 @@
 package fi.vincit.mutrproject.service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
@@ -33,6 +35,17 @@ public class TodoService {
         todoLists.put(id, new TodoList(id, listName, publicList, userService.getLoggedInUser()));
         currentId++;
         return id;
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    public List<TodoList> getTodoLists() {
+        final User currentUser = userService.getLoggedInUser();
+        return todoLists.values().stream().filter(
+                list -> list.isPublicList()
+                            || list.getOwner().getUsername().equals(currentUser.getUsername())
+                            || currentUser.getAuthorities().contains(Role.ROLE_ADMIN)
+                            || currentUser.getAuthorities().contains(Role.ROLE_SUPER_ADMIN)
+        ).collect(Collectors.toList());
     }
 
     @PreAuthorize("isAuthenticated()")
