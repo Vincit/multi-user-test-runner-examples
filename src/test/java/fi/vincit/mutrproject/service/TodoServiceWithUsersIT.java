@@ -12,6 +12,7 @@ import fi.vincit.multiusertest.annotation.TestUsers;
 import fi.vincit.multiusertest.util.LoginRole;
 import fi.vincit.mutrproject.AbstractConfiguredIT;
 import fi.vincit.mutrproject.domain.Role;
+import fi.vincit.mutrproject.domain.TodoItem;
 
 @TestUsers(
         creators = {"user:admin", "user:user1"},
@@ -53,6 +54,18 @@ public class TodoServiceWithUsersIT extends AbstractConfiguredIT {
         logInAs(LoginRole.USER);
         authorization().expect(notToFail(ifAnyOf("role:ROLE_SUPER_ADMIN", TestUsers.CREATOR)));
         todoService.addItemToList(listId, "Write tests");
+    }
+
+    @Test
+    public void setTaskAsDone() throws Throwable {
+        long listId = todoService.createTodoList("Test list", false);
+
+        logInAs(LoginRole.USER);
+        authorization().expect(notToFail(ifAnyOf("role:ROLE_SUPER_ADMIN", TestUsers.CREATOR)));
+        long itemId = todoService.addItemToList(listId, "Write tests");
+        TodoItem item = todoService.getTodoItem(listId, itemId);
+        item.setDone(true);
+        todoService.setItemStatus(listId, item);
     }
 
 }

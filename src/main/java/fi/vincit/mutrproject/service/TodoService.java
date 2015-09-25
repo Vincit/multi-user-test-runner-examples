@@ -43,6 +43,25 @@ public class TodoService {
     }
 
     @PreAuthorize("isAuthenticated()")
+    public TodoItem getTodoItem(long listId, long id) {
+        TodoList list = todoLists.get(listId);
+        User user = userService.getLoggedInUser();
+        authorizeRead(list, user);
+
+        return list.getItems().stream()
+                .filter(i -> i.getId() == id)
+                .findFirst()
+                .orElse(null);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    public void setItemStatus(long listId, TodoItem item) {
+        TodoItem existingItem = getTodoItem(listId, item.getId());
+        authorizeEdit(getTodoList(listId), userService.getLoggedInUser());
+        existingItem.setDone(item.isDone());
+    }
+
+    @PreAuthorize("isAuthenticated()")
     public long addItemToList(long listId, String task) {
         TodoList list = getTodoList(listId);
 
