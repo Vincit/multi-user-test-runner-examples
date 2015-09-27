@@ -22,6 +22,11 @@ import fi.vincit.mutrproject.domain.Role;
 import fi.vincit.mutrproject.domain.User;
 import fi.vincit.mutrproject.service.UserService;
 
+/**
+ * Example configuration that uses role aliases. Coverts role definitions
+ * to roles used by the system under test. See {@link #stringToRole(String)}
+ * method.
+ */
 @TestExecutionListeners({DependencyInjectionTestExecutionListener.class,
         DirtiesContextTestExecutionListener.class,
         TransactionalTestExecutionListener.class})

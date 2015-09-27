@@ -18,6 +18,9 @@ import fi.vincit.multiusertest.util.LoginRole;
 import fi.vincit.mutrproject.configuration.AbstractConfiguredIT;
 import fi.vincit.mutrproject.domain.TodoList;
 
+/**
+ * Examples how to use advanced assertions with Java 8
+ */
 @TestUsers(
         creators = {"role:ROLE_SUPER_ADMIN", "role:ROLE_ADMIN", "role:ROLE_USER"},
         users = {"role:ROLE_SUPER_ADMIN", "role:ROLE_ADMIN", "role:ROLE_USER", "role:ROLE_ANONYMOUS", TestUsers.CREATOR}

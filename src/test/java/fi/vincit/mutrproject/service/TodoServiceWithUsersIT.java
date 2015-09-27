@@ -14,6 +14,9 @@ import fi.vincit.mutrproject.configuration.AbstractConfiguredIT;
 import fi.vincit.mutrproject.domain.Role;
 import fi.vincit.mutrproject.domain.TodoItem;
 
+/**
+ * Example how to use existing users
+ */
 @TestUsers(
         creators = {"user:admin", "user:user1"},
         users = {"role:ROLE_SUPER_ADMIN", "user:user2", "role:ROLE_ANONYMOUS", TestUsers.CREATOR}

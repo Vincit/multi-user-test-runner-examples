@@ -22,6 +22,9 @@ import fi.vincit.mutrproject.domain.Role;
 import fi.vincit.mutrproject.domain.User;
 import fi.vincit.mutrproject.service.UserService;
 
+/**
+ * Example of basic configuration for Spring projects.
+ */
 @TestExecutionListeners({DependencyInjectionTestExecutionListener.class,
         DirtiesContextTestExecutionListener.class,
         TransactionalTestExecutionListener.class})

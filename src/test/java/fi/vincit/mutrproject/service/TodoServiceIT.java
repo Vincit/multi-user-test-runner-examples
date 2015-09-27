@@ -11,6 +11,9 @@ import fi.vincit.multiusertest.annotation.TestUsers;
 import fi.vincit.multiusertest.util.LoginRole;
 import fi.vincit.mutrproject.configuration.AbstractConfiguredIT;
 
+/**
+ * Basic examples on how to use multi-user-test-runner.
+ */
 @TestUsers(
         creators = {"role:ROLE_SUPER_ADMIN", "role:ROLE_ADMIN", "role:ROLE_USER", "role:ROLE_USER"},
         users = {"role:ROLE_SUPER_ADMIN", "role:ROLE_ADMIN", "role:ROLE_USER", "role:ROLE_ANONYMOUS", TestUsers.CREATOR}
