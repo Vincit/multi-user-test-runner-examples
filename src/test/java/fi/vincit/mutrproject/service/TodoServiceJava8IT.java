@@ -19,7 +19,7 @@ import fi.vincit.mutrproject.AbstractConfiguredIT;
 import fi.vincit.mutrproject.domain.TodoList;
 
 @TestUsers(
-        creators = {"role:ROLE_SUPER_ADMIN", "role:ROLE_ADMIN", "role:ROLE_USER", "role:ROLE_USER"},
+        creators = {"role:ROLE_SUPER_ADMIN", "role:ROLE_ADMIN", "role:ROLE_USER"},
         users = {"role:ROLE_SUPER_ADMIN", "role:ROLE_ADMIN", "role:ROLE_USER", "role:ROLE_ANONYMOUS", TestUsers.CREATOR}
 )
 public class TodoServiceJava8IT extends AbstractConfiguredIT {
