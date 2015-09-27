@@ -1,4 +1,4 @@
-package fi.vincit.mutrproject;
+package fi.vincit.mutrproject.configuration;
 
 
 import org.junit.After;
@@ -16,6 +16,7 @@ import fi.vincit.multiusertest.runner.junit.MultiUserTestRunner;
 import fi.vincit.multiusertest.runner.junit.framework.SpringMultiUserTestClassRunner;
 import fi.vincit.multiusertest.test.AbstractUserRoleIT;
 import fi.vincit.multiusertest.util.LoginRole;
+import fi.vincit.mutrproject.Application;
 import fi.vincit.mutrproject.config.SecurityConfig;
 import fi.vincit.mutrproject.domain.Role;
 import fi.vincit.mutrproject.domain.User;

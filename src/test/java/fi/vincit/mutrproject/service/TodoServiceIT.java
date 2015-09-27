@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import fi.vincit.multiusertest.annotation.TestUsers;
 import fi.vincit.multiusertest.util.LoginRole;
-import fi.vincit.mutrproject.AbstractConfiguredIT;
+import fi.vincit.mutrproject.configuration.AbstractConfiguredIT;
 
 @TestUsers(
         creators = {"role:ROLE_SUPER_ADMIN", "role:ROLE_ADMIN", "role:ROLE_USER", "role:ROLE_USER"},

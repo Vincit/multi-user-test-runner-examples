@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import fi.vincit.multiusertest.annotation.TestUsers;
 import fi.vincit.multiusertest.util.LoginRole;
-import fi.vincit.mutrproject.AbstractConfiguredRoleAliasIT;
+import fi.vincit.mutrproject.configuration.AbstractConfiguredRoleAliasIT;
 
 /**
  * Example test using role aliasing. See {@link AbstractConfiguredRoleAliasIT} for an example
