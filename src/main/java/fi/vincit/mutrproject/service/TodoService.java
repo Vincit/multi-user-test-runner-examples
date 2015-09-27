@@ -1,6 +1,6 @@
 package fi.vincit.mutrproject.service;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -21,7 +21,7 @@ public class TodoService {
     @Autowired
     private UserService userService;
 
-    private static Map<Long, TodoList> todoLists = new HashMap<Long, TodoList>();
+    private static Map<Long, TodoList> todoLists = new LinkedHashMap<>();
     private static long currentId = 1;
     private static long currentItemId = 1;
 
