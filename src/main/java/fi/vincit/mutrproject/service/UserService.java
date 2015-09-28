@@ -1,6 +1,7 @@
 package fi.vincit.mutrproject.service;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,6 +31,12 @@ public class UserService implements UserDetailsService {
 
     public User createUser(String username, Role role) {
         User user =  new User(username, username, Arrays.asList(role));
+        repo.put(username, user);
+        return user;
+    }
+
+    public User createUser(String username, Collection<Role> roles) {
+        User user =  new User(username, username, roles);
         repo.put(username, user);
         return user;
     }
