@@ -6,7 +6,7 @@ Simple example project and example tests.
 ## Basic Examples
 
 * [Basic Example with Roles](src/test/java/fi/vincit/mutrproject/service/TodoServiceIT.java)
-* [Basic Example with Existing Users](src/test/java/fi/vincit/mutrproject/service/TodoServiceIT.java)
+* [Basic Example with Existing Users](src/test/java/fi/vincit/mutrproject/service/TodoServiceWithUsersIT.java)
 * [Basic Configuration](src/test/java/fi/vincit/mutrproject/configuration/AbstractConfiguredIT.java)
 
 ## Advanced Assertions
