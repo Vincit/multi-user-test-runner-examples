@@ -50,7 +50,7 @@ public abstract class AbstractConfiguredIT extends AbstractUserRoleIT<User, Role
 
     @Override
     protected User createUser(String username, String firstName, String lastName, Role userRole, LoginRole loginRole) {
-        return userService.createUser(username, userRole);
+        return userService.createUser(username, username, userRole);
     }
 
     @Override

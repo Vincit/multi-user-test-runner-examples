@@ -31,9 +31,9 @@ public class TodoServiceWithUsersIT extends AbstractConfiguredIT {
 
     @Before
     public void initUsers() {
-        userService.createUser("admin", Role.ROLE_ADMIN);
-        userService.createUser("user1", Role.ROLE_USER);
-        userService.createUser("user2", Role.ROLE_USER);
+        userService.createUser("admin", "admin", Role.ROLE_ADMIN);
+        userService.createUser("user1", "user1", Role.ROLE_USER);
+        userService.createUser("user2", "user2", Role.ROLE_USER);
     }
 
     @Test

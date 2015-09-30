@@ -1,15 +1,24 @@
 package fi.vincit.mutrproject.configuration;
 
 
+import static com.jayway.restassured.RestAssured.given;
+
 import org.junit.After;
+import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.IntegrationTest;
+import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
+import org.springframework.test.context.web.WebAppConfiguration;
+
+import com.jayway.restassured.RestAssured;
+import com.jayway.restassured.specification.RequestSpecification;
 
 import fi.vincit.multiusertest.annotation.MultiUserTestConfig;
 import fi.vincit.multiusertest.runner.junit.MultiUserTestRunner;
@@ -23,9 +32,7 @@ import fi.vincit.mutrproject.domain.User;
 import fi.vincit.mutrproject.service.UserService;
 
 /**
- * Example configuration that uses role aliases. Coverts role definitions
- * to roles used by the system under test. See {@link #stringToRole(String)}
- * method.
+ * Example of basic configuration for Spring projects.
  */
 @TestExecutionListeners({DependencyInjectionTestExecutionListener.class,
         DirtiesContextTestExecutionListener.class,
@@ -33,9 +40,19 @@ import fi.vincit.mutrproject.service.UserService;
 @MultiUserTestConfig(
         runner = SpringMultiUserTestClassRunner.class,
         defaultException = AccessDeniedException.class)
-@ContextConfiguration(classes = {Application.class, SecurityConfig.class})
+@SpringApplicationConfiguration(classes = {Application.class, SecurityConfig.class})
+@WebAppConfiguration
+@IntegrationTest("server.port:0")
 @RunWith(MultiUserTestRunner.class)
-public abstract class AbstractConfiguredRoleAliasIT extends AbstractUserRoleIT<User, Role> {
+public abstract class AbstractConfiguredRestAssuredIT extends AbstractUserRoleIT<User, Role> {
+
+    @Value("${local.server.port}")
+    private int port;
+
+    @Before
+    public void setUp() {
+        RestAssured.port = port;
+    }
 
     @After
     public void clear() {
@@ -45,23 +62,28 @@ public abstract class AbstractConfiguredRoleAliasIT extends AbstractUserRoleIT<U
     @Autowired
     private UserService userService;
 
+    private String username;
+    private String password;
+
     @Override
     protected void loginWithUser(User user) {
-        userService.loginUser(user);
+        username = user.getUsername();
+        password = user.getUsername();
+    }
+
+    protected RequestSpecification whenAuthenticated() {
+        return given().auth().preemptive().basic(username, password).header("Content-Type", "application/json");
     }
 
     @Override
     protected User createUser(String username, String firstName, String lastName, Role userRole, LoginRole loginRole) {
-        return userService.createUser(username, username, userRole);
+        String password = username;
+        return userService.createUser(username, password, userRole);
     }
 
     @Override
     protected Role stringToRole(String role) {
-        if (role.equals("UNREGISTERED")) {
-            return Role.ROLE_ANONYMOUS;
-        } else {
-            return Role.valueOf("ROLE_" + role);
-        }
+        return Role.valueOf(role);
     }
 
     @Override

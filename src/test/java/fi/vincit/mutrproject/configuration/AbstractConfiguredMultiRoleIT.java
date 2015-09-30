@@ -56,7 +56,7 @@ public abstract class AbstractConfiguredMultiRoleIT extends AbstractUserRoleIT<U
 
     @Override
     protected User createUser(String username, String firstName, String lastName, RoleGroup userRole, LoginRole loginRole) {
-        return userService.createUser(username, roleGroupToRoles(userRole));
+        return userService.createUser(username, username, roleGroupToRoles(userRole));
     }
 
     private Collection<Role> roleGroupToRoles(RoleGroup roleGroup) {
