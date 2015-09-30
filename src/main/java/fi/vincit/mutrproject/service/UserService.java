@@ -26,17 +26,16 @@ public class UserService implements UserDetailsService {
     @Override
     public User loadUserByUsername(String username)
             throws UsernameNotFoundException {
-        return repo.get(username);
+        User user = repo.get(username);
+        return new User(user.getUsername(), user.getPassword(), user.getAuthorities());
     }
 
-    public User createUser(String username, Role role) {
-        User user =  new User(username, username, Arrays.asList(role));
-        repo.put(username, user);
-        return user;
+    public User createUser(String username, String password, Role role) {
+        return createUser(username, password, Arrays.asList(role));
     }
 
-    public User createUser(String username, Collection<Role> roles) {
-        User user =  new User(username, username, roles);
+    public User createUser(String username, String password, Collection<Role> roles) {
+        User user =  new User(username, password, roles);
         repo.put(username, user);
         return user;
     }
@@ -46,8 +45,12 @@ public class UserService implements UserDetailsService {
     }
 
     public void loginUser(User user) {
-        SecurityContextHolder.getContext().setAuthentication(
-                new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities())
-        );
+        if (user != null) {
+            SecurityContextHolder.getContext().setAuthentication(
+                    new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities())
+            );
+        } else {
+            SecurityContextHolder.getContext().setAuthentication(null);
+        }
     }
 }

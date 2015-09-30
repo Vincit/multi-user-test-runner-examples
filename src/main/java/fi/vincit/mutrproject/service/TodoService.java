@@ -75,6 +75,13 @@ public class TodoService {
     }
 
     @PreAuthorize("isAuthenticated()")
+    public void setItemStatus(long listId, long itemId, boolean done) {
+        TodoItem existingItem = getTodoItem(listId, itemId);
+        authorizeEdit(getTodoList(listId), userService.getLoggedInUser());
+        existingItem.setDone(done);
+    }
+
+    @PreAuthorize("isAuthenticated()")
     public long addItemToList(long listId, String task) {
         TodoList list = getTodoList(listId);
 
