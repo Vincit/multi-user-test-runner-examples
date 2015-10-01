@@ -5,9 +5,16 @@ Simple example project and example tests.
 
 ## Basic Examples
 
+### Spring Service Layer
+
 * [Basic Example with Roles](src/test/java/fi/vincit/mutrproject/service/TodoServiceIT.java)
 * [Basic Example with Existing Users](src/test/java/fi/vincit/mutrproject/service/TodoServiceWithUsersIT.java)
 * [Basic Configuration](src/test/java/fi/vincit/mutrproject/configuration/AbstractConfiguredIT.java)
+
+### REST Assured
+
+* [REST Assured Example](src/test/java/fi/vincit/mutrproject/service/RestAssuredIT.java)
+* [REST Assured Configuration](src/test/java/fi/vincit/mutrproject/configuration/AbstractConfiguredRestAssuredIT.java)
 
 ## Advanced Assertions
 
