@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,8 +20,12 @@ public class UserService implements UserDetailsService {
 
     private Map<String, User> repo = new HashMap<>();
 
-    User getLoggedInUser() {
-        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    Optional<User> getLoggedInUser() {
+        if (SecurityContextHolder.getContext().getAuthentication() != null) {
+            return Optional.of((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        } else {
+            return Optional.empty();
+        }
     }
 
     @Override
@@ -52,5 +57,9 @@ public class UserService implements UserDetailsService {
         } else {
             SecurityContextHolder.getContext().setAuthentication(null);
         }
+    }
+
+    public void logout() {
+        SecurityContextHolder.getContext().setAuthentication(null);
     }
 }

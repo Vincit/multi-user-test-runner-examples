@@ -3,6 +3,7 @@ package fi.vincit.mutrproject.service;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,33 +33,35 @@ public class TodoService {
     @PreAuthorize("isAuthenticated()")
     public long createTodoList(String listName, boolean publicList) {
         long id = currentId;
-        todoLists.put(id, new TodoList(id, listName, publicList, userService.getLoggedInUser()));
+        todoLists.put(id, new TodoList(id, listName, publicList, userService.getLoggedInUser().get()));
         currentId++;
         return id;
     }
 
-    @PreAuthorize("isAuthenticated()")
     public List<TodoList> getTodoLists() {
-        final User currentUser = userService.getLoggedInUser();
-        return todoLists.values().stream().filter(
-                list -> list.isPublicList()
-                            || list.getOwner().getUsername().equals(currentUser.getUsername())
-                            || currentUser.getAuthorities().contains(Role.ROLE_ADMIN)
-                            || currentUser.getAuthorities().contains(Role.ROLE_SUPER_ADMIN)
-        ).collect(Collectors.toList());
+        final Optional<User> currentUser = userService.getLoggedInUser();
+        if (currentUser.isPresent()) {
+            return todoLists.values().stream().filter(
+                    list -> list.isPublicList()
+                            || list.getOwner().getUsername().equals(currentUser.get().getUsername())
+                            || currentUser.get().getAuthorities().contains(Role.ROLE_ADMIN)
+                            || currentUser.get().getAuthorities().contains(Role.ROLE_SUPER_ADMIN)
+            ).collect(Collectors.toList());
+        } else {
+            return todoLists.values().stream().filter(TodoList::isPublicList).collect(Collectors.toList());
+        }
     }
 
-    @PreAuthorize("isAuthenticated()")
     public TodoList getTodoList(long id) {
         TodoList list = todoLists.get(id);
-        User user = userService.getLoggedInUser();
+        Optional<User> user = userService.getLoggedInUser();
         return authorizeRead(list, user);
     }
 
     @PreAuthorize("isAuthenticated()")
     public TodoItem getTodoItem(long listId, long id) {
         TodoList list = todoLists.get(listId);
-        User user = userService.getLoggedInUser();
+        Optional<User> user = userService.getLoggedInUser();
         authorizeRead(list, user);
 
         return list.getItems().stream()
@@ -85,7 +88,7 @@ public class TodoService {
     public long addItemToList(long listId, String task) {
         TodoList list = getTodoList(listId);
 
-        User user = userService.getLoggedInUser();
+        Optional<User> user = userService.getLoggedInUser();
         authorizeEdit(list, user);
 
         long id = currentItemId;
@@ -94,7 +97,7 @@ public class TodoService {
         return id;
     }
 
-    private TodoList authorizeRead(TodoList list, User user) {
+    private TodoList authorizeRead(TodoList list, Optional<User> user) {
         if (list.isPublicList()) {
             return list;
         }
@@ -102,11 +105,14 @@ public class TodoService {
         return list;
     }
 
-    private void authorizeEdit(TodoList list, User user) {
-        if (user.getAuthorities().contains(Role.ROLE_ADMIN) || user.getAuthorities().contains(Role.ROLE_SUPER_ADMIN)) {
-            return;
-        } else if (user.getUsername().equals(list.getOwner().getUsername())) {
-            return;
+    private void authorizeEdit(TodoList list, Optional<User> user) {
+        if (user.isPresent()) {
+            User loggedInUser = user.get();
+            if (loggedInUser.getAuthorities().contains(Role.ROLE_ADMIN) || loggedInUser.getAuthorities().contains(Role.ROLE_SUPER_ADMIN)) {
+                return;
+            } else if (loggedInUser.getUsername().equals(list.getOwner().getUsername())) {
+                return;
+            }
         }
         throw new AccessDeniedException("");
     }

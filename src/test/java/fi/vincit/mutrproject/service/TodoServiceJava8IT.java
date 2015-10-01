@@ -12,6 +12,7 @@ import java.util.Arrays;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 
 import fi.vincit.multiusertest.annotation.TestUsers;
 import fi.vincit.multiusertest.util.LoginRole;
@@ -23,7 +24,7 @@ import fi.vincit.mutrproject.domain.TodoList;
  */
 @TestUsers(
         creators = {"role:ROLE_SUPER_ADMIN", "role:ROLE_ADMIN", "role:ROLE_USER"},
-        users = {"role:ROLE_SUPER_ADMIN", "role:ROLE_ADMIN", "role:ROLE_USER", "role:ROLE_ANONYMOUS", TestUsers.CREATOR}
+        users = {"role:ROLE_SUPER_ADMIN", "role:ROLE_ADMIN", "role:ROLE_USER", TestUsers.CREATOR, TestUsers.ANONYMOUS}
 )
 public class TodoServiceJava8IT extends AbstractConfiguredIT {
 
@@ -41,7 +42,7 @@ public class TodoServiceJava8IT extends AbstractConfiguredIT {
         logInAs(LoginRole.USER);
         authorization().expect(
                 call(() -> todoService.getTodoList(id))
-                        .toFail(ifAnyOf("role:ROLE_USER", "role:ROLE_ANONYMOUS"))
+                        .toFail(ifAnyOf("role:ROLE_USER", TestUsers.ANONYMOUS))
         );
     }
 
@@ -59,7 +60,9 @@ public class TodoServiceJava8IT extends AbstractConfiguredIT {
 
         authorization().expect(
                 call(() -> todoService.addItemToList(listId, "Write tests"))
-                        .notToFail(ifAnyOf("role:ROLE_ADMIN", "role:ROLE_SUPER_ADMIN", TestUsers.CREATOR))
+                        .toFail(ifAnyOf("role:ROLE_USER"))
+                        .toFailWithException(AuthenticationCredentialsNotFoundException.class,
+                                ifAnyOf(TestUsers.ANONYMOUS))
         );
     }
 
@@ -72,7 +75,7 @@ public class TodoServiceJava8IT extends AbstractConfiguredIT {
         logInAs(LoginRole.USER);
 
         authorization().expect(valueOf(() -> todoService.getTodoLists().size())
-                        .toEqual(1, ifAnyOf("role:ROLE_USER", "role:ANONYMOUS"))
+                        .toEqual(1, ifAnyOf("role:ROLE_USER", TestUsers.ANONYMOUS))
                         .toEqual(3, ifAnyOf(TestUsers.CREATOR, "role:ROLE_ADMIN", "role:ROLE_SUPER_ADMIN"))
         );
     }
@@ -88,7 +91,7 @@ public class TodoServiceJava8IT extends AbstractConfiguredIT {
         authorization().expect(valueOf(() ->
                         todoService.getTodoLists().stream().map(TodoList::getName).collect(toList()))
                         .toAssert(value -> assertThat(value, is(Arrays.asList("Test list 2"))),
-                                ifAnyOf("role:ROLE_USER", "role:ANONYMOUS")
+                                ifAnyOf("role:ROLE_USER")
                         )
                         .toAssert(value -> assertThat(value, is(Arrays.asList("Test list 1",
                                         "Test list 2",
