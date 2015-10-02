@@ -33,7 +33,15 @@ public class TodoService {
     @PreAuthorize("isAuthenticated()")
     public long createTodoList(String listName, boolean publicList) {
         long id = currentId;
-        todoLists.put(id, new TodoList(id, listName, publicList, userService.getLoggedInUser().get()));
+        todoLists.put(
+                id,
+                new TodoList(
+                    id,
+                    listName,
+                    publicList,
+                    userService.getLoggedInUser().get().getUsername()
+                )
+        );
         currentId++;
         return id;
     }
@@ -43,7 +51,7 @@ public class TodoService {
         if (currentUser.isPresent()) {
             return todoLists.values().stream().filter(
                     list -> list.isPublicList()
-                            || list.getOwner().getUsername().equals(currentUser.get().getUsername())
+                            || list.getOwner().equals(currentUser.get().getUsername())
                             || currentUser.get().getAuthorities().contains(Role.ROLE_ADMIN)
                             || currentUser.get().getAuthorities().contains(Role.ROLE_SYSTEM_ADMIN)
             ).collect(Collectors.toList());
@@ -110,7 +118,7 @@ public class TodoService {
             User loggedInUser = user.get();
             if (isAdmin(loggedInUser)) {
                 return;
-            } else if (loggedInUser.getUsername().equals(list.getOwner().getUsername())) {
+            } else if (loggedInUser.getUsername().equals(list.getOwner())) {
                 return;
             }
         }

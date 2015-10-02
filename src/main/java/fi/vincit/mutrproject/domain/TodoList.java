@@ -8,10 +8,10 @@ public class TodoList {
     private long id;
     private String name;
     private boolean publicList;
-    private User owner;
+    private String owner;
     private List<TodoItem> items;
 
-    public TodoList(long id, String name, boolean publicList, User owner) {
+    public TodoList(long id, String name, boolean publicList, String owner) {
         this.id = id;
         this.name = name;
         this.publicList = publicList;
@@ -31,7 +31,7 @@ public class TodoList {
         return publicList;
     }
 
-    public User getOwner() {
+    public String getOwner() {
         return owner;
     }
 
