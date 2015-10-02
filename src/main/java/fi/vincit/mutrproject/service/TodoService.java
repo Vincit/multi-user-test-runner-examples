@@ -51,9 +51,8 @@ public class TodoService {
         if (currentUser.isPresent()) {
             return todoLists.values().stream().filter(
                     list -> list.isPublicList()
-                            || list.getOwner().equals(currentUser.get().getUsername())
-                            || currentUser.get().getAuthorities().contains(Role.ROLE_ADMIN)
-                            || currentUser.get().getAuthorities().contains(Role.ROLE_SYSTEM_ADMIN)
+                            || isOwner(list, currentUser.get())
+                            || isAdmin(currentUser.get())
             ).collect(Collectors.toList());
         } else {
             return todoLists.values().stream().filter(TodoList::isPublicList).collect(Collectors.toList());
@@ -118,7 +117,7 @@ public class TodoService {
             User loggedInUser = user.get();
             if (isAdmin(loggedInUser)) {
                 return;
-            } else if (loggedInUser.getUsername().equals(list.getOwner())) {
+            } else if (isOwner(list, loggedInUser)) {
                 return;
             }
         }
@@ -128,6 +127,9 @@ public class TodoService {
     private boolean isAdmin(User loggedInUser) {
         return loggedInUser.getAuthorities().contains(Role.ROLE_ADMIN)
                 || loggedInUser.getAuthorities().contains(Role.ROLE_SYSTEM_ADMIN);
+    }
+    private boolean isOwner(TodoList list, User currentUser) {
+        return list.getOwner().equals(currentUser.getUsername());
     }
 
 }
