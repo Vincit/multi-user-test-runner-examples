@@ -108,13 +108,18 @@ public class TodoService {
     private void authorizeEdit(TodoList list, Optional<User> user) {
         if (user.isPresent()) {
             User loggedInUser = user.get();
-            if (loggedInUser.getAuthorities().contains(Role.ROLE_ADMIN) || loggedInUser.getAuthorities().contains(Role.ROLE_SYSTEM_ADMIN)) {
+            if (isAdmin(loggedInUser)) {
                 return;
             } else if (loggedInUser.getUsername().equals(list.getOwner().getUsername())) {
                 return;
             }
         }
         throw new AccessDeniedException("");
+    }
+
+    private boolean isAdmin(User loggedInUser) {
+        return loggedInUser.getAuthorities().contains(Role.ROLE_ADMIN)
+                || loggedInUser.getAuthorities().contains(Role.ROLE_SYSTEM_ADMIN);
     }
 
 }
