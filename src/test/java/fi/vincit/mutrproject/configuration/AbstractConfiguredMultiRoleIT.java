@@ -61,8 +61,8 @@ public abstract class AbstractConfiguredMultiRoleIT extends AbstractUserRoleIT<U
 
     private Collection<Role> roleGroupToRoles(RoleGroup roleGroup) {
         switch (roleGroup) {
-            case ADMINISTRATOR: return Arrays.asList(Role.ROLE_ADMIN, Role.ROLE_MODERATOR, Role.ROLE_USER, Role.ROLE_ANONYMOUS);
-            case REGULAR_USER: return Arrays.asList(Role.ROLE_USER, Role.ROLE_ANONYMOUS);
+            case ADMINISTRATOR: return Arrays.asList(Role.ROLE_ADMIN, Role.ROLE_MODERATOR, Role.ROLE_USER);
+            case REGULAR_USER: return Arrays.asList(Role.ROLE_USER);
             default: throw new IllegalArgumentException("Invalid role group " + roleGroup);
         }
     }

@@ -19,7 +19,7 @@ import fi.vincit.mutrproject.domain.TodoItem;
  */
 @TestUsers(
         creators = {"user:admin", "user:user1"},
-        users = {"role:ROLE_SYSTEM_ADMIN", "user:user2", "role:ROLE_ANONYMOUS", TestUsers.CREATOR}
+        users = {"role:ROLE_SYSTEM_ADMIN", "user:user2", TestUsers.CREATOR}
 )
 public class TodoServiceWithUsersIT extends AbstractConfiguredIT {
 

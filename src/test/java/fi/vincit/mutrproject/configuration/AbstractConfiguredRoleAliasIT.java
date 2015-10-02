@@ -57,8 +57,8 @@ public abstract class AbstractConfiguredRoleAliasIT extends AbstractUserRoleIT<U
 
     @Override
     protected Role stringToRole(String role) {
-        if (role.equals("UNREGISTERED")) {
-            return Role.ROLE_ANONYMOUS;
+        if (role.equals("REGULAR")) {
+            return Role.ROLE_USER;
         } else {
             return Role.valueOf("ROLE_" + role);
         }
