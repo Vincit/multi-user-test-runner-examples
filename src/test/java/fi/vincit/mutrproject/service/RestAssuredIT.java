@@ -44,10 +44,10 @@ public class RestAssuredIT extends AbstractConfiguredRestAssuredIT {
     @Test
     public void getTodoLists() throws Throwable {
         whenAuthenticated()
-                .body(new TodoCommand("Test List")).post("/api/todo/list/private")
+                .body(new TodoCommand("Test List 1")).post("/api/todo/list/private")
                 .then().assertThat().statusCode(HttpStatus.SC_OK);
         whenAuthenticated()
-                .body(new TodoCommand("Test List")).post("/api/todo/list/public")
+                .body(new TodoCommand("Test List 2")).post("/api/todo/list/public")
                 .then().assertThat().statusCode(HttpStatus.SC_OK);
 
         logInAs(LoginRole.USER);
