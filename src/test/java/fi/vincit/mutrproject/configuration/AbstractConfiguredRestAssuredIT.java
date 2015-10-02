@@ -64,15 +64,30 @@ public abstract class AbstractConfiguredRestAssuredIT extends AbstractUserRoleIT
 
     private String username;
     private String password;
+    private boolean isAnonymous;
 
     @Override
     protected void loginWithUser(User user) {
         username = user.getUsername();
         password = user.getUsername();
+        isAnonymous = false;
+    }
+
+    @Override
+    protected void loginAnonymous() {
+        username = null;
+        password = null;
+        isAnonymous = true;
     }
 
     protected RequestSpecification whenAuthenticated() {
-        return given().auth().preemptive().basic(username, password).header("Content-Type", "application/json");
+        RequestSpecification spec = given();
+        if (!isAnonymous) {
+            spec = spec.auth().preemptive().basic(username, password);
+        } else {
+            spec = spec;
+        }
+        return spec.header("Content-Type", "application/json");
     }
 
     @Override

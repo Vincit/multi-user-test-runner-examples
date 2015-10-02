@@ -22,10 +22,12 @@ public class UserService implements UserDetailsService {
 
     Optional<User> getLoggedInUser() {
         if (SecurityContextHolder.getContext().getAuthentication() != null) {
-            return Optional.of((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-        } else {
-            return Optional.empty();
+            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            if (principal instanceof User){
+                return Optional.of((User) principal);
+            }
         }
+        return Optional.empty();
     }
 
     @Override

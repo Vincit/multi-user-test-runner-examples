@@ -24,7 +24,7 @@ import fi.vincit.mutrproject.domain.TodoListCommand;
  */
 @TestUsers(
         creators = {"user:admin", "role:ROLE_ADMIN", "role:ROLE_USER"},
-        users = {"role:ROLE_ADMIN", "role:ROLE_USER", "user:user1", TestUsers.CREATOR}
+        users = {"role:ROLE_ADMIN", "role:ROLE_USER", "user:user1", TestUsers.CREATOR, TestUsers.ANONYMOUS}
 )
 public class RestAssuredIT extends AbstractConfiguredRestAssuredIT {
 
@@ -60,7 +60,7 @@ public class RestAssuredIT extends AbstractConfiguredRestAssuredIT {
                         ifAnyOf("role:ROLE_ADMIN", TestUsers.CREATOR))
                 .toAssert(t -> t.statusCode(HttpStatus.SC_OK)
                                 .body("", hasSize(1)),
-                        ifAnyOf("role:ROLE_USER", "user:user1")));
+                        ifAnyOf("role:ROLE_USER", "user:user1", TestUsers.ANONYMOUS)));
     }
 
     @Test
@@ -78,7 +78,9 @@ public class RestAssuredIT extends AbstractConfiguredRestAssuredIT {
                                 .assertThat().body("name", equalTo("Test List")),
                         ifAnyOf("role:ROLE_ADMIN", TestUsers.CREATOR))
                 .toAssert(t -> t.statusCode(HttpStatus.SC_FORBIDDEN),
-                        ifAnyOf("role:ROLE_USER", "user:user1")));
+                        ifAnyOf("role:ROLE_USER", "user:user1"))
+                .toAssert(t -> t.statusCode(HttpStatus.SC_UNAUTHORIZED),
+                        ifAnyOf(TestUsers.ANONYMOUS)));
     }
 
     @Test
@@ -96,7 +98,9 @@ public class RestAssuredIT extends AbstractConfiguredRestAssuredIT {
                 .toAssert(t -> t.statusCode(HttpStatus.SC_OK),
                         ifAnyOf("role:ROLE_ADMIN", TestUsers.CREATOR))
                 .toAssert(t -> t.statusCode(HttpStatus.SC_FORBIDDEN),
-                        ifAnyOf("role:ROLE_USER", "user:user1")));
+                        ifAnyOf("role:ROLE_USER", "user:user1"))
+                .toAssert(t -> t.statusCode(HttpStatus.SC_UNAUTHORIZED),
+                        ifAnyOf(TestUsers.ANONYMOUS)));
     }
 
     @Test
@@ -114,7 +118,9 @@ public class RestAssuredIT extends AbstractConfiguredRestAssuredIT {
                 .toAssert(t -> t.statusCode(HttpStatus.SC_OK),
                         ifAnyOf("role:ROLE_ADMIN", TestUsers.CREATOR))
                 .toAssert(t -> t.statusCode(HttpStatus.SC_FORBIDDEN),
-                        ifAnyOf("role:ROLE_USER", "user:user1")));
+                        ifAnyOf("role:ROLE_USER", "user:user1"))
+                .toAssert(t -> t.statusCode(HttpStatus.SC_UNAUTHORIZED),
+                        ifAnyOf(TestUsers.ANONYMOUS)));
     }
 
     @Test
@@ -135,7 +141,9 @@ public class RestAssuredIT extends AbstractConfiguredRestAssuredIT {
                 .toAssert(t -> t.statusCode(HttpStatus.SC_OK),
                         ifAnyOf("role:ROLE_ADMIN", TestUsers.CREATOR))
                 .toAssert(t -> t.statusCode(HttpStatus.SC_FORBIDDEN),
-                        ifAnyOf("role:ROLE_USER", "user:user1")));
+                        ifAnyOf("role:ROLE_USER", "user:user1"))
+                .toAssert(t -> t.statusCode(HttpStatus.SC_UNAUTHORIZED),
+                        ifAnyOf(TestUsers.ANONYMOUS)));
     }
 
     @Test
@@ -156,7 +164,9 @@ public class RestAssuredIT extends AbstractConfiguredRestAssuredIT {
                 .toAssert(t -> t.statusCode(HttpStatus.SC_OK),
                         ifAnyOf("role:ROLE_ADMIN", TestUsers.CREATOR))
                 .toAssert(t -> t.statusCode(HttpStatus.SC_FORBIDDEN),
-                        ifAnyOf("role:ROLE_USER", "user:user1")));
+                        ifAnyOf("role:ROLE_USER", "user:user1"))
+                .toAssert(t -> t.statusCode(HttpStatus.SC_UNAUTHORIZED),
+                        ifAnyOf(TestUsers.ANONYMOUS)));
 
     }
 
