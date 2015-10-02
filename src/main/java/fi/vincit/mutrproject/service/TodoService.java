@@ -26,7 +26,7 @@ public class TodoService {
     private static long currentId = 1;
     private static long currentItemId = 1;
 
-    public void clearList() {
+    void clearList() {
         todoLists.clear();
     }
 
