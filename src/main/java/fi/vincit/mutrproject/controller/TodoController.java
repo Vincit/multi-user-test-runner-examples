@@ -15,7 +15,7 @@ import fi.vincit.mutrproject.domain.TodoList;
 import fi.vincit.mutrproject.service.TodoService;
 
 @RestController
-public class TestController {
+public class TodoController {
 
     @Autowired
     private TodoService todoService;
