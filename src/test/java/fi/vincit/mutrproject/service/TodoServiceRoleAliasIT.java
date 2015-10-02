@@ -16,8 +16,8 @@ import fi.vincit.mutrproject.configuration.AbstractConfiguredRoleAliasIT;
  * how to implement role aliasing.
  */
 @TestUsers(
-        creators = {"role:SUPER_ADMIN", "role:ADMIN", "role:USER", "role:USER"},
-        users = {"role:SUPER_ADMIN", "role:ADMIN", "role:USER", "role:UNREGISTERED", TestUsers.CREATOR}
+        creators = {"role:SYSTEM_ADMIN", "role:ADMIN", "role:USER", "role:USER"},
+        users = {"role:SYSTEM_ADMIN", "role:ADMIN", "role:USER", "role:UNREGISTERED", TestUsers.CREATOR}
 )
 public class TodoServiceRoleAliasIT extends AbstractConfiguredRoleAliasIT {
 
@@ -43,7 +43,7 @@ public class TodoServiceRoleAliasIT extends AbstractConfiguredRoleAliasIT {
     public void addTodoItem() throws Throwable {
         long listId = todoService.createTodoList("Test list", false);
         logInAs(LoginRole.USER);
-        authorization().expect(notToFail(ifAnyOf("role:ADMIN", "role:SUPER_ADMIN", TestUsers.CREATOR)));
+        authorization().expect(notToFail(ifAnyOf("role:ADMIN", "role:SYSTEM_ADMIN", TestUsers.CREATOR)));
         todoService.addItemToList(listId, "Write tests");
     }
 

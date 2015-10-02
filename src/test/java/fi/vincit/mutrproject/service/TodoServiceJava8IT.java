@@ -23,8 +23,8 @@ import fi.vincit.mutrproject.domain.TodoList;
  * Examples how to use advanced assertions with Java 8
  */
 @TestUsers(
-        creators = {"role:ROLE_SUPER_ADMIN", "role:ROLE_ADMIN", "role:ROLE_USER"},
-        users = {"role:ROLE_SUPER_ADMIN", "role:ROLE_ADMIN", "role:ROLE_USER", TestUsers.CREATOR, TestUsers.ANONYMOUS}
+        creators = {"role:ROLE_SYSTEM_ADMIN", "role:ROLE_ADMIN", "role:ROLE_USER"},
+        users = {"role:ROLE_SYSTEM_ADMIN", "role:ROLE_ADMIN", "role:ROLE_USER", TestUsers.CREATOR, TestUsers.ANONYMOUS}
 )
 public class TodoServiceJava8IT extends AbstractConfiguredIT {
 
@@ -76,7 +76,7 @@ public class TodoServiceJava8IT extends AbstractConfiguredIT {
 
         authorization().expect(valueOf(() -> todoService.getTodoLists().size())
                         .toEqual(1, ifAnyOf("role:ROLE_USER", TestUsers.ANONYMOUS))
-                        .toEqual(3, ifAnyOf(TestUsers.CREATOR, "role:ROLE_ADMIN", "role:ROLE_SUPER_ADMIN"))
+                        .toEqual(3, ifAnyOf(TestUsers.CREATOR, "role:ROLE_ADMIN", "role:ROLE_SYSTEM_ADMIN"))
         );
     }
 
@@ -96,7 +96,7 @@ public class TodoServiceJava8IT extends AbstractConfiguredIT {
                         .toAssert(value -> assertThat(value, is(Arrays.asList("Test list 1",
                                         "Test list 2",
                                         "Test list 3"))),
-                                ifAnyOf(TestUsers.CREATOR, "role:ROLE_ADMIN", "role:ROLE_SUPER_ADMIN")
+                                ifAnyOf(TestUsers.CREATOR, "role:ROLE_ADMIN", "role:ROLE_SYSTEM_ADMIN")
                         )
         );
     }

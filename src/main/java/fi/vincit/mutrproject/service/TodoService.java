@@ -45,7 +45,7 @@ public class TodoService {
                     list -> list.isPublicList()
                             || list.getOwner().getUsername().equals(currentUser.get().getUsername())
                             || currentUser.get().getAuthorities().contains(Role.ROLE_ADMIN)
-                            || currentUser.get().getAuthorities().contains(Role.ROLE_SUPER_ADMIN)
+                            || currentUser.get().getAuthorities().contains(Role.ROLE_SYSTEM_ADMIN)
             ).collect(Collectors.toList());
         } else {
             return todoLists.values().stream().filter(TodoList::isPublicList).collect(Collectors.toList());
@@ -108,7 +108,7 @@ public class TodoService {
     private void authorizeEdit(TodoList list, Optional<User> user) {
         if (user.isPresent()) {
             User loggedInUser = user.get();
-            if (loggedInUser.getAuthorities().contains(Role.ROLE_ADMIN) || loggedInUser.getAuthorities().contains(Role.ROLE_SUPER_ADMIN)) {
+            if (loggedInUser.getAuthorities().contains(Role.ROLE_ADMIN) || loggedInUser.getAuthorities().contains(Role.ROLE_SYSTEM_ADMIN)) {
                 return;
             } else if (loggedInUser.getUsername().equals(list.getOwner().getUsername())) {
                 return;

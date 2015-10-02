@@ -6,7 +6,7 @@ public enum Role implements GrantedAuthority {
 
     ROLE_USER,
     ROLE_ADMIN,
-    ROLE_SUPER_ADMIN,
+    ROLE_SYSTEM_ADMIN,
     ROLE_MODERATOR,
     ROLE_ANONYMOUS;
 

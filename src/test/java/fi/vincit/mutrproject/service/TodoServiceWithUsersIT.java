@@ -19,7 +19,7 @@ import fi.vincit.mutrproject.domain.TodoItem;
  */
 @TestUsers(
         creators = {"user:admin", "user:user1"},
-        users = {"role:ROLE_SUPER_ADMIN", "user:user2", "role:ROLE_ANONYMOUS", TestUsers.CREATOR}
+        users = {"role:ROLE_SYSTEM_ADMIN", "user:user2", "role:ROLE_ANONYMOUS", TestUsers.CREATOR}
 )
 public class TodoServiceWithUsersIT extends AbstractConfiguredIT {
 
@@ -55,7 +55,7 @@ public class TodoServiceWithUsersIT extends AbstractConfiguredIT {
     public void addTodoItem() throws Throwable {
         long listId = todoService.createTodoList("Test list", false);
         logInAs(LoginRole.USER);
-        authorization().expect(notToFail(ifAnyOf("role:ROLE_SUPER_ADMIN", TestUsers.CREATOR)));
+        authorization().expect(notToFail(ifAnyOf("role:ROLE_SYSTEM_ADMIN", TestUsers.CREATOR)));
         todoService.addItemToList(listId, "Write tests");
     }
 
@@ -64,7 +64,7 @@ public class TodoServiceWithUsersIT extends AbstractConfiguredIT {
         long listId = todoService.createTodoList("Test list", false);
 
         logInAs(LoginRole.USER);
-        authorization().expect(notToFail(ifAnyOf("role:ROLE_SUPER_ADMIN", TestUsers.CREATOR)));
+        authorization().expect(notToFail(ifAnyOf("role:ROLE_SYSTEM_ADMIN", TestUsers.CREATOR)));
         long itemId = todoService.addItemToList(listId, "Write tests");
         TodoItem item = todoService.getTodoItem(listId, itemId);
         item.setDone(true);
