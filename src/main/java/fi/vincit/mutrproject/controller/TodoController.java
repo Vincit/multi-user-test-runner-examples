@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import fi.vincit.mutrproject.domain.TodoCommand;
 import fi.vincit.mutrproject.domain.TodoItemCommand;
 import fi.vincit.mutrproject.domain.TodoList;
+import fi.vincit.mutrproject.domain.TodoListCommand;
 import fi.vincit.mutrproject.service.TodoService;
 
 @RestController
@@ -35,14 +35,9 @@ public class TodoController {
         return todoService.addItemToList(todoItemCommand.getListId(), todoItemCommand.getName());
     }
 
-    @RequestMapping(value = "/api/todo/list/public", method = RequestMethod.POST, consumes = "application/json")
-    public long createPublicList(@RequestBody TodoCommand todoCommand) {
-        return todoService.createTodoList(todoCommand.getName(), true);
-    }
-
-    @RequestMapping(value = "/api/todo/list/private", method = RequestMethod.POST, consumes = "application/json")
-    public long createPrivateList(@RequestBody TodoCommand todoCommand) {
-        return todoService.createTodoList(todoCommand.getName(), false);
+    @RequestMapping(value = "/api/todo/list", method = RequestMethod.POST, consumes = "application/json")
+    public long createPublicList(@RequestBody TodoListCommand todoListCommand) {
+        return todoService.createTodoList(todoListCommand.getName(), todoListCommand.isPublicList());
     }
 
     @RequestMapping(value = "/api/todo/list/{listId}/{itemId}/done", method = RequestMethod.POST, consumes = "application/json")

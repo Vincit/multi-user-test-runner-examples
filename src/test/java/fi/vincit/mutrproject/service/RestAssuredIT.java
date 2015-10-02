@@ -16,8 +16,8 @@ import fi.vincit.multiusertest.annotation.TestUsers;
 import fi.vincit.multiusertest.util.LoginRole;
 import fi.vincit.mutrproject.configuration.AbstractConfiguredRestAssuredIT;
 import fi.vincit.mutrproject.domain.Role;
-import fi.vincit.mutrproject.domain.TodoCommand;
 import fi.vincit.mutrproject.domain.TodoItemCommand;
+import fi.vincit.mutrproject.domain.TodoListCommand;
 
 /**
  * Example how to use existing users
@@ -44,10 +44,10 @@ public class RestAssuredIT extends AbstractConfiguredRestAssuredIT {
     @Test
     public void getTodoLists() throws Throwable {
         whenAuthenticated()
-                .body(new TodoCommand("Test List 1")).post("/api/todo/list/private")
+                .body(new TodoListCommand("Test List 1", false)).post("/api/todo/list")
                 .then().assertThat().statusCode(HttpStatus.SC_OK);
         whenAuthenticated()
-                .body(new TodoCommand("Test List 2")).post("/api/todo/list/public")
+                .body(new TodoListCommand("Test List 2", true)).post("/api/todo/list")
                 .then().assertThat().statusCode(HttpStatus.SC_OK);
 
         logInAs(LoginRole.USER);
@@ -66,7 +66,7 @@ public class RestAssuredIT extends AbstractConfiguredRestAssuredIT {
     @Test
     public void getPrivateTodoList() throws Throwable {
         long id = whenAuthenticated()
-                .body(new TodoCommand("Test List")).post("/api/todo/list/private")
+                .body(new TodoListCommand("Test List", false)).post("/api/todo/list")
                 .body().as(Long.class);
 
         logInAs(LoginRole.USER);
@@ -84,7 +84,7 @@ public class RestAssuredIT extends AbstractConfiguredRestAssuredIT {
     @Test
     public void addItemToPrivateList() throws Throwable {
         long listId = whenAuthenticated()
-                .body(new TodoCommand("Test List")).post("/api/todo/list/private")
+                .body(new TodoListCommand("Test List", false)).post("/api/todo/list")
                 .body().as(Long.class);
 
         logInAs(LoginRole.USER);
@@ -102,7 +102,7 @@ public class RestAssuredIT extends AbstractConfiguredRestAssuredIT {
     @Test
     public void addItemToPublicList() throws Throwable {
         long listId = whenAuthenticated()
-                .body(new TodoCommand("Test List")).post("/api/todo/list/private")
+                .body(new TodoListCommand("Test List", false)).post("/api/todo/list")
                 .body().as(Long.class);
 
         logInAs(LoginRole.USER);
@@ -120,7 +120,7 @@ public class RestAssuredIT extends AbstractConfiguredRestAssuredIT {
     @Test
     public void setPrivateItemAsDone() throws Throwable {
         long listId = whenAuthenticated()
-                .body(new TodoCommand("Test List")).post("/api/todo/list/private")
+                .body(new TodoListCommand("Test List", false)).post("/api/todo/list")
                 .body().as(Long.class);
 
         long itemId = whenAuthenticated()
@@ -141,7 +141,7 @@ public class RestAssuredIT extends AbstractConfiguredRestAssuredIT {
     @Test
     public void setPublicItemAsDone() throws Throwable {
         long listId = whenAuthenticated()
-                .body(new TodoCommand("Test List")).post("/api/todo/list/public")
+                .body(new TodoListCommand("Test List", true)).post("/api/todo/list")
                 .body().as(Long.class);
 
         long itemId = whenAuthenticated()
@@ -157,6 +157,7 @@ public class RestAssuredIT extends AbstractConfiguredRestAssuredIT {
                         ifAnyOf("role:ROLE_ADMIN", TestUsers.CREATOR))
                 .toAssert(t -> t.statusCode(HttpStatus.SC_FORBIDDEN),
                         ifAnyOf("role:ROLE_USER", "user:user1")));
+
     }
 
 }
