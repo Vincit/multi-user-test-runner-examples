@@ -4,6 +4,7 @@ import static fi.vincit.multiusertest.rule.Authentication.notToFail;
 import static fi.vincit.multiusertest.rule.Authentication.toFail;
 import static fi.vincit.multiusertest.util.UserIdentifiers.ifAnyOf;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +24,16 @@ import fi.vincit.mutrproject.domain.TodoItem;
 )
 public class TodoServiceWithUsersIT extends AbstractConfiguredIT {
 
-    @Autowired
-    private TodoService todoService;
+    @After
+    public void clear() {
+        todoService.clearList();
+        userService.clearUsers();
+    }
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private TodoService todoService;
 
     @Before
     public void initUsers() {

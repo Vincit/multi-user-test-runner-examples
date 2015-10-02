@@ -1,67 +1,23 @@
 package fi.vincit.mutrproject.service;
 
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
-
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
 
 import fi.vincit.mutrproject.domain.Role;
 import fi.vincit.mutrproject.domain.User;
 
-@Service
-public class UserService implements UserDetailsService {
+public interface UserService {
+    Optional<User> getLoggedInUser();
 
-    private Map<String, User> repo = new HashMap<>();
+    User createUser(String username, String password, Role role);
 
-    Optional<User> getLoggedInUser() {
-        if (SecurityContextHolder.getContext().getAuthentication() != null) {
-            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            if (principal instanceof User){
-                return Optional.of((User) principal);
-            }
-        }
-        return Optional.empty();
-    }
+    User createUser(String username, String password, Collection<Role> roles);
 
-    @Override
-    public User loadUserByUsername(String username)
-            throws UsernameNotFoundException {
-        User user = repo.get(username);
-        return new User(user.getUsername(), user.getPassword(), user.getAuthorities());
-    }
+    void clearUsers();
 
-    public User createUser(String username, String password, Role role) {
-        return createUser(username, password, Arrays.asList(role));
-    }
+    void loginUser(User user);
 
-    public User createUser(String username, String password, Collection<Role> roles) {
-        User user =  new User(username, password, roles);
-        repo.put(username, user);
-        return user;
-    }
+    void logout();
 
-    public void clearUsers() {
-        repo.clear();
-    }
-
-    public void loginUser(User user) {
-        if (user != null) {
-            SecurityContextHolder.getContext().setAuthentication(
-                    new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities())
-            );
-        } else {
-            SecurityContextHolder.getContext().setAuthentication(null);
-        }
-    }
-
-    public void logout() {
-        SecurityContextHolder.getContext().setAuthentication(null);
-    }
+    User loadUserByUsername(String username);
 }

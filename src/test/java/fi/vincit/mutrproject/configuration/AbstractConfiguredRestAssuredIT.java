@@ -29,6 +29,7 @@ import fi.vincit.mutrproject.Application;
 import fi.vincit.mutrproject.config.SecurityConfig;
 import fi.vincit.mutrproject.domain.Role;
 import fi.vincit.mutrproject.domain.User;
+import fi.vincit.mutrproject.service.TodoService;
 import fi.vincit.mutrproject.service.UserService;
 
 /**
@@ -56,11 +57,14 @@ public abstract class AbstractConfiguredRestAssuredIT extends AbstractUserRoleIT
 
     @After
     public void clear() {
+        todoService.clearList();
         userService.clearUsers();
     }
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private TodoService todoService;
 
     private String username;
     private String password;

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configurers.GlobalAuthenticationConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 import fi.vincit.mutrproject.domain.Role;
 import fi.vincit.mutrproject.service.UserService;
@@ -16,9 +17,12 @@ public class AuthenticationConfig extends GlobalAuthenticationConfigurerAdapter 
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private UserDetailsService userDetailsService;
+
     @Override
     public void init(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userService);
+        auth.userDetailsService(userDetailsService);
     }
 
     @PostConstruct

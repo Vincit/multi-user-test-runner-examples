@@ -1,8 +1,6 @@
 package fi.vincit.mutrproject.service;
 
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -15,6 +13,8 @@ import fi.vincit.mutrproject.domain.Role;
 import fi.vincit.mutrproject.domain.TodoItem;
 import fi.vincit.mutrproject.domain.TodoList;
 import fi.vincit.mutrproject.domain.User;
+import fi.vincit.mutrproject.repository.TodoItemRepository;
+import fi.vincit.mutrproject.repository.TodoListRepository;
 
 @Service
 public class TodoService {
@@ -22,66 +22,59 @@ public class TodoService {
     @Autowired
     private UserService userService;
 
-    private static Map<Long, TodoList> todoLists = new LinkedHashMap<>();
-    private static long currentId = 1;
-    private static long currentItemId = 1;
+    @Autowired
+    private TodoItemRepository todoItemRepository;
+    @Autowired
+    private TodoListRepository todoListRepository;
 
-    void clearList() {
-        todoLists.clear();
+
+    public void clearList() {
+        todoItemRepository.deleteAll();
+        todoListRepository.deleteAll();
     }
 
     @PreAuthorize("isAuthenticated()")
     public long createTodoList(String listName, boolean publicList) {
-        long id = currentId;
-        todoLists.put(
-                id,
-                new TodoList(
-                    id,
-                    listName,
-                    publicList,
-                    userService.getLoggedInUser().get().getUsername()
-                )
-        );
-        currentId++;
-        return id;
+        TodoList list = todoListRepository.save(new TodoList(
+                listName,
+                publicList,
+                userService.getLoggedInUser().get()
+        ));
+        return list.getId();
     }
 
     public List<TodoList> getTodoLists() {
         final Optional<User> currentUser = userService.getLoggedInUser();
+        List<TodoList> todoLists = todoListRepository.findAll();
         if (currentUser.isPresent()) {
-            return todoLists.values().stream().filter(
+            return todoLists.stream().filter(
                     list -> list.isPublicList()
                             || isOwner(list, currentUser.get())
                             || isAdmin(currentUser.get())
             ).collect(Collectors.toList());
         } else {
-            return todoLists.values().stream().filter(TodoList::isPublicList).collect(Collectors.toList());
+            return todoLists.stream().filter(TodoList::isPublicList).collect(Collectors.toList());
         }
     }
 
     public TodoList getTodoList(long id) {
-        TodoList list = todoLists.get(id);
+        TodoList list = todoListRepository.findOne(id);
         Optional<User> user = userService.getLoggedInUser();
         return authorizeRead(list, user);
     }
 
     @PreAuthorize("isAuthenticated()")
     public TodoItem getTodoItem(long listId, long id) {
-        TodoList list = todoLists.get(listId);
+        TodoList list = todoListRepository.findOne(listId);
         Optional<User> user = userService.getLoggedInUser();
         authorizeRead(list, user);
 
-        return list.getItems().stream()
-                .filter(i -> i.getId() == id)
-                .findFirst()
-                .orElse(null);
+        return todoItemRepository.findOne(id);
     }
 
     @PreAuthorize("isAuthenticated()")
     public void setItemStatus(long listId, TodoItem item) {
-        TodoItem existingItem = getTodoItem(listId, item.getId());
-        authorizeEdit(getTodoList(listId), userService.getLoggedInUser());
-        existingItem.setDone(item.isDone());
+        setItemStatus(listId, item.getId(), item.isDone());
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -89,6 +82,7 @@ public class TodoService {
         TodoItem existingItem = getTodoItem(listId, itemId);
         authorizeEdit(getTodoList(listId), userService.getLoggedInUser());
         existingItem.setDone(done);
+        todoItemRepository.save(existingItem);
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -98,10 +92,8 @@ public class TodoService {
         Optional<User> user = userService.getLoggedInUser();
         authorizeEdit(list, user);
 
-        long id = currentItemId;
-        list.getItems().add(new TodoItem(id, task, false));
-        currentItemId++;
-        return id;
+        TodoItem item = todoItemRepository.save(new TodoItem(listId, task, false));
+        return item.getId();
     }
 
     private TodoList authorizeRead(TodoList list, Optional<User> user) {
@@ -129,7 +121,7 @@ public class TodoService {
                 || loggedInUser.getAuthorities().contains(Role.ROLE_SYSTEM_ADMIN);
     }
     private boolean isOwner(TodoList list, User currentUser) {
-        return list.getOwner().equals(currentUser.getUsername());
+        return list.getOwner().getUsername().equals(currentUser.getUsername());
     }
 
 }
