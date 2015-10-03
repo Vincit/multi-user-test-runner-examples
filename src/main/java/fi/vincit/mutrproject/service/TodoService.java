@@ -47,18 +47,17 @@ public class TodoService {
 
     public List<TodoListDto> getTodoLists() {
         final Optional<User> currentUser = userService.getLoggedInUser();
-        List<TodoList> todoLists = todoListRepository.findAll();
+        List<TodoList> todoLists;
         if (currentUser.isPresent()) {
-            return todoLists.stream().filter(
-                    list -> list.isPublicList()
-                            || isOwner(list, currentUser.get())
-                            || isAdmin(currentUser.get())
-            ).map(TodoListDto::new)
-                    .collect(Collectors.toList());
+            if (isAdmin(currentUser.get())) {
+                todoLists = todoListRepository.findAll();
+            } else {
+                todoLists = todoListRepository.findPublicAndOwnedBy(currentUser.get().getUsername());
+            }
         } else {
-            return todoLists.stream().filter(TodoList::isPublicList).map(TodoListDto::new)
-                    .collect(Collectors.toList());
+            todoLists = todoListRepository.findPublicLists();
         }
+        return todoLists.stream().map(TodoListDto::new).collect(Collectors.toList());
     }
 
     public TodoListDto getTodoList(long id) {
