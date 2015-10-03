@@ -1,4 +1,4 @@
-package fi.vincit.mutrproject.service;
+package fi.vincit.mutrproject.feature.todo;
 
 import static fi.vincit.multiusertest.rule.expection.Expectations.valueOf;
 import static fi.vincit.multiusertest.util.UserIdentifiers.ifAnyOf;
@@ -15,11 +15,10 @@ import com.jayway.restassured.response.Response;
 import fi.vincit.multiusertest.annotation.TestUsers;
 import fi.vincit.multiusertest.util.LoginRole;
 import fi.vincit.mutrproject.configuration.AbstractConfiguredRestAssuredIT;
-import fi.vincit.mutrproject.service.todo.TodoService;
-import fi.vincit.mutrproject.service.todo.command.TodoItemCommand;
-import fi.vincit.mutrproject.service.todo.command.TodoListCommand;
-import fi.vincit.mutrproject.service.user.UserService;
-import fi.vincit.mutrproject.service.user.model.Role;
+import fi.vincit.mutrproject.feature.todo.command.TodoItemCommand;
+import fi.vincit.mutrproject.feature.todo.command.TodoListCommand;
+import fi.vincit.mutrproject.feature.user.UserService;
+import fi.vincit.mutrproject.feature.user.model.Role;
 
 /**
  * Example how to use existing users

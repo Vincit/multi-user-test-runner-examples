@@ -1,4 +1,4 @@
-package fi.vincit.mutrproject.service;
+package fi.vincit.mutrproject.feature.todo;
 
 import static fi.vincit.multiusertest.rule.Authentication.notToFail;
 import static fi.vincit.multiusertest.rule.Authentication.toFail;
@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import fi.vincit.multiusertest.annotation.TestUsers;
 import fi.vincit.multiusertest.util.LoginRole;
 import fi.vincit.mutrproject.configuration.AbstractConfiguredRoleAliasIT;
-import fi.vincit.mutrproject.service.todo.TodoService;
 
 /**
  * Example test using role aliasing. See {@link AbstractConfiguredRoleAliasIT} for an example

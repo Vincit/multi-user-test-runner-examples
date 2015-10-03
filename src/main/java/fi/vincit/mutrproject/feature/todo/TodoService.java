@@ -1,4 +1,4 @@
-package fi.vincit.mutrproject.service.todo;
+package fi.vincit.mutrproject.feature.todo;
 
 import java.util.List;
 import java.util.Optional;
@@ -9,15 +9,15 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
-import fi.vincit.mutrproject.repository.TodoItemRepository;
-import fi.vincit.mutrproject.repository.TodoListRepository;
-import fi.vincit.mutrproject.service.todo.dto.TodoItemDto;
-import fi.vincit.mutrproject.service.todo.dto.TodoListDto;
-import fi.vincit.mutrproject.service.todo.model.TodoItem;
-import fi.vincit.mutrproject.service.todo.model.TodoList;
-import fi.vincit.mutrproject.service.user.UserService;
-import fi.vincit.mutrproject.service.user.model.Role;
-import fi.vincit.mutrproject.service.user.model.User;
+import fi.vincit.mutrproject.feature.todo.dto.TodoItemDto;
+import fi.vincit.mutrproject.feature.todo.dto.TodoListDto;
+import fi.vincit.mutrproject.feature.todo.model.TodoItem;
+import fi.vincit.mutrproject.feature.todo.model.TodoList;
+import fi.vincit.mutrproject.feature.todo.repository.TodoItemRepository;
+import fi.vincit.mutrproject.feature.todo.repository.TodoListRepository;
+import fi.vincit.mutrproject.feature.user.UserService;
+import fi.vincit.mutrproject.feature.user.model.Role;
+import fi.vincit.mutrproject.feature.user.model.User;
 
 @Service
 public class TodoService {

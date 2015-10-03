@@ -1,4 +1,4 @@
-package fi.vincit.mutrproject.service.todo.command;
+package fi.vincit.mutrproject.feature.todo.command;
 
 public class TodoItemCommand {
 

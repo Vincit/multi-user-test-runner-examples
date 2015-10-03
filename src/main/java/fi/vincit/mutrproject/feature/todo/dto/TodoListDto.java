@@ -1,9 +1,9 @@
-package fi.vincit.mutrproject.service.todo.dto;
+package fi.vincit.mutrproject.feature.todo.dto;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-import fi.vincit.mutrproject.service.todo.model.TodoList;
+import fi.vincit.mutrproject.feature.todo.model.TodoList;
 
 public class TodoListDto {
     private long id;

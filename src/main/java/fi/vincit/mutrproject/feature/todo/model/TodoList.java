@@ -1,4 +1,4 @@
-package fi.vincit.mutrproject.service.todo.model;
+package fi.vincit.mutrproject.feature.todo.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import fi.vincit.mutrproject.service.user.model.User;
+import fi.vincit.mutrproject.feature.user.model.User;
 
 @Entity(name = "todo_list")
 public class TodoList {

@@ -1,4 +1,4 @@
-package fi.vincit.mutrproject.service;
+package fi.vincit.mutrproject.feature.todo;
 
 import static fi.vincit.multiusertest.rule.Authentication.notToFail;
 import static fi.vincit.multiusertest.rule.Authentication.toFail;
@@ -12,10 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import fi.vincit.multiusertest.annotation.TestUsers;
 import fi.vincit.multiusertest.util.LoginRole;
 import fi.vincit.mutrproject.configuration.AbstractConfiguredIT;
-import fi.vincit.mutrproject.service.todo.TodoService;
-import fi.vincit.mutrproject.service.todo.dto.TodoItemDto;
-import fi.vincit.mutrproject.service.user.UserService;
-import fi.vincit.mutrproject.service.user.model.Role;
+import fi.vincit.mutrproject.feature.todo.dto.TodoItemDto;
+import fi.vincit.mutrproject.feature.user.UserService;
+import fi.vincit.mutrproject.feature.user.model.Role;
 
 /**
  * Example how to use existing users

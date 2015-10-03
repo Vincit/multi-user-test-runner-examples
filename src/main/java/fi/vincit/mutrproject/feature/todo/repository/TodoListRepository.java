@@ -1,4 +1,4 @@
-package fi.vincit.mutrproject.repository;
+package fi.vincit.mutrproject.feature.todo.repository;
 
 import java.util.List;
 
@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import fi.vincit.mutrproject.service.todo.model.TodoList;
+import fi.vincit.mutrproject.feature.todo.model.TodoList;
 
 @Repository
 public interface TodoListRepository extends JpaRepository<TodoList, Long> {

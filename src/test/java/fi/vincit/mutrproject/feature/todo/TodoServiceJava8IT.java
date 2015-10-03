@@ -1,4 +1,4 @@
-package fi.vincit.mutrproject.service;
+package fi.vincit.mutrproject.feature.todo;
 
 import static fi.vincit.multiusertest.rule.expection.Expectations.call;
 import static fi.vincit.multiusertest.rule.expection.Expectations.valueOf;
@@ -17,8 +17,7 @@ import org.springframework.security.authentication.AuthenticationCredentialsNotF
 import fi.vincit.multiusertest.annotation.TestUsers;
 import fi.vincit.multiusertest.util.LoginRole;
 import fi.vincit.mutrproject.configuration.AbstractConfiguredIT;
-import fi.vincit.mutrproject.service.todo.TodoService;
-import fi.vincit.mutrproject.service.todo.dto.TodoListDto;
+import fi.vincit.mutrproject.feature.todo.dto.TodoListDto;
 
 /**
  * Examples how to use advanced assertions with Java 8

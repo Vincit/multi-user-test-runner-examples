@@ -1,4 +1,4 @@
-package fi.vincit.mutrproject.service.user.model;
+package fi.vincit.mutrproject.feature.user.model;
 
 import java.util.Collection;
 

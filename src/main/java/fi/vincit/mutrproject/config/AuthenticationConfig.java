@@ -8,8 +8,8 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.authentication.configurers.GlobalAuthenticationConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
-import fi.vincit.mutrproject.service.user.UserService;
-import fi.vincit.mutrproject.service.user.model.Role;
+import fi.vincit.mutrproject.feature.user.UserService;
+import fi.vincit.mutrproject.feature.user.model.Role;
 
 @Configuration
 public class AuthenticationConfig extends GlobalAuthenticationConfigurerAdapter {
