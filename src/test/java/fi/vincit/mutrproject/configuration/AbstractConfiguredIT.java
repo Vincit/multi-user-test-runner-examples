@@ -18,10 +18,10 @@ import fi.vincit.multiusertest.test.AbstractUserRoleIT;
 import fi.vincit.multiusertest.util.LoginRole;
 import fi.vincit.mutrproject.Application;
 import fi.vincit.mutrproject.config.SecurityConfig;
-import fi.vincit.mutrproject.feature.todo.TodoService;
 import fi.vincit.mutrproject.feature.user.UserService;
 import fi.vincit.mutrproject.feature.user.model.Role;
 import fi.vincit.mutrproject.feature.user.model.User;
+import fi.vincit.mutrproject.util.DatabaseUtil;
 
 /**
  * Example of basic configuration for Spring projects.
@@ -38,14 +38,14 @@ public abstract class AbstractConfiguredIT extends AbstractUserRoleIT<User, Role
 
     @After
     public void clear() {
-        todoService.clearList();
-        userService.clearUsers();
+        databaseUtil.clearDb();
     }
 
     @Autowired
-    private UserService userService;
+    private DatabaseUtil databaseUtil;
+
     @Autowired
-    private TodoService todoService;
+    private UserService userService;
 
     @Override
     protected void loginWithUser(User user) {
