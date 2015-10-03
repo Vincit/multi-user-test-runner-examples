@@ -57,10 +57,13 @@ public class RestAssuredIT extends AbstractConfiguredRestAssuredIT {
 
         authorization().expect(valueOf(response::then)
                 .toAssert(t -> t.statusCode(HttpStatus.SC_OK)
-                                .body("", hasSize(2)),
+                                .body("", hasSize(2))
+                                .body("[0].name", equalTo("Test List 1"))
+                                .body("[1].name", equalTo("Test List 2")),
                         ifAnyOf("role:ROLE_ADMIN", TestUsers.CREATOR))
                 .toAssert(t -> t.statusCode(HttpStatus.SC_OK)
-                                .body("", hasSize(1)),
+                                .body("", hasSize(1))
+                                .body("[0].name", equalTo("Test List 2")),
                         ifAnyOf("role:ROLE_USER", "user:user1", TestUsers.ANONYMOUS)));
     }
 
