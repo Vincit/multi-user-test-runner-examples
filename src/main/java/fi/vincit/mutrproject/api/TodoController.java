@@ -1,4 +1,4 @@
-package fi.vincit.mutrproject.controller;
+package fi.vincit.mutrproject.api;
 
 import java.util.List;
 
