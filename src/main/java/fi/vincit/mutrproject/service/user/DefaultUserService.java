@@ -1,4 +1,4 @@
-package fi.vincit.mutrproject.service;
+package fi.vincit.mutrproject.service.user;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -12,9 +12,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import fi.vincit.mutrproject.domain.Role;
-import fi.vincit.mutrproject.domain.User;
 import fi.vincit.mutrproject.repository.UserRepository;
+import fi.vincit.mutrproject.service.user.model.Role;
+import fi.vincit.mutrproject.service.user.model.User;
 
 @Service
 public class DefaultUserService implements UserService, UserDetailsService {

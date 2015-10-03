@@ -17,7 +17,8 @@ import org.springframework.security.authentication.AuthenticationCredentialsNotF
 import fi.vincit.multiusertest.annotation.TestUsers;
 import fi.vincit.multiusertest.util.LoginRole;
 import fi.vincit.mutrproject.configuration.AbstractConfiguredIT;
-import fi.vincit.mutrproject.service.dto.TodoListDto;
+import fi.vincit.mutrproject.service.todo.TodoService;
+import fi.vincit.mutrproject.service.todo.dto.TodoListDto;
 
 /**
  * Examples how to use advanced assertions with Java 8

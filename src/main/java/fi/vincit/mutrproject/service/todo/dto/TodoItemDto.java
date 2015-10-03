@@ -1,6 +1,6 @@
-package fi.vincit.mutrproject.service.dto;
+package fi.vincit.mutrproject.service.todo.dto;
 
-import fi.vincit.mutrproject.domain.TodoItem;
+import fi.vincit.mutrproject.service.todo.model.TodoItem;
 
 public class TodoItemDto {
 

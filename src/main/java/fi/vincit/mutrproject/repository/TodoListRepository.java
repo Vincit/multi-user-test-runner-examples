@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import fi.vincit.mutrproject.domain.TodoList;
+import fi.vincit.mutrproject.service.todo.model.TodoList;
 
 @Repository
 public interface TodoListRepository extends JpaRepository<TodoList, Long> {

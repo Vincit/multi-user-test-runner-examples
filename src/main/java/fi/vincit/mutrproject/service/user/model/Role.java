@@ -1,4 +1,4 @@
-package fi.vincit.mutrproject.domain;
+package fi.vincit.mutrproject.service.user.model;
 
 import org.springframework.security.core.GrantedAuthority;
 

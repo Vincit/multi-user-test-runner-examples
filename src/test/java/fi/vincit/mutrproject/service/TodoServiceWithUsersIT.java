@@ -12,8 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import fi.vincit.multiusertest.annotation.TestUsers;
 import fi.vincit.multiusertest.util.LoginRole;
 import fi.vincit.mutrproject.configuration.AbstractConfiguredIT;
-import fi.vincit.mutrproject.domain.Role;
-import fi.vincit.mutrproject.service.dto.TodoItemDto;
+import fi.vincit.mutrproject.service.todo.TodoService;
+import fi.vincit.mutrproject.service.todo.dto.TodoItemDto;
+import fi.vincit.mutrproject.service.user.UserService;
+import fi.vincit.mutrproject.service.user.model.Role;
 
 /**
  * Example how to use existing users

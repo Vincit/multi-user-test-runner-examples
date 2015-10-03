@@ -1,10 +1,10 @@
-package fi.vincit.mutrproject.service;
+package fi.vincit.mutrproject.service.user;
 
 import java.util.Collection;
 import java.util.Optional;
 
-import fi.vincit.mutrproject.domain.Role;
-import fi.vincit.mutrproject.domain.User;
+import fi.vincit.mutrproject.service.user.model.Role;
+import fi.vincit.mutrproject.service.user.model.User;
 
 public interface UserService {
     Optional<User> getLoggedInUser();

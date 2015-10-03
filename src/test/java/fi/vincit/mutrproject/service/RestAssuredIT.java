@@ -15,9 +15,11 @@ import com.jayway.restassured.response.Response;
 import fi.vincit.multiusertest.annotation.TestUsers;
 import fi.vincit.multiusertest.util.LoginRole;
 import fi.vincit.mutrproject.configuration.AbstractConfiguredRestAssuredIT;
-import fi.vincit.mutrproject.domain.Role;
-import fi.vincit.mutrproject.domain.TodoItemCommand;
-import fi.vincit.mutrproject.domain.TodoListCommand;
+import fi.vincit.mutrproject.service.todo.TodoService;
+import fi.vincit.mutrproject.service.todo.command.TodoItemCommand;
+import fi.vincit.mutrproject.service.todo.command.TodoListCommand;
+import fi.vincit.mutrproject.service.user.UserService;
+import fi.vincit.mutrproject.service.user.model.Role;
 
 /**
  * Example how to use existing users

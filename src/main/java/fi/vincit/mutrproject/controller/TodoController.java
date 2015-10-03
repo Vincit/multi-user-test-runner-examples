@@ -9,10 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import fi.vincit.mutrproject.domain.TodoItemCommand;
-import fi.vincit.mutrproject.domain.TodoListCommand;
-import fi.vincit.mutrproject.service.TodoService;
-import fi.vincit.mutrproject.service.dto.TodoListDto;
+import fi.vincit.mutrproject.service.todo.TodoService;
+import fi.vincit.mutrproject.service.todo.command.TodoItemCommand;
+import fi.vincit.mutrproject.service.todo.command.TodoListCommand;
 
 @RestController
 public class TodoController {

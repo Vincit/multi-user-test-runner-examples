@@ -1,4 +1,4 @@
-package fi.vincit.mutrproject.domain;
+package fi.vincit.mutrproject.service.todo.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

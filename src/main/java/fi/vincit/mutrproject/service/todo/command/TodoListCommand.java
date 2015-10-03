@@ -1,4 +1,4 @@
-package fi.vincit.mutrproject.domain;
+package fi.vincit.mutrproject.service.todo.command;
 
 public class TodoListCommand {
     private String name;

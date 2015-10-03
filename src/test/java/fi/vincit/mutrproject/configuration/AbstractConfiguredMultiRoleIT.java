@@ -21,10 +21,10 @@ import fi.vincit.multiusertest.test.AbstractUserRoleIT;
 import fi.vincit.multiusertest.util.LoginRole;
 import fi.vincit.mutrproject.Application;
 import fi.vincit.mutrproject.config.SecurityConfig;
-import fi.vincit.mutrproject.domain.Role;
-import fi.vincit.mutrproject.domain.User;
-import fi.vincit.mutrproject.service.TodoService;
-import fi.vincit.mutrproject.service.UserService;
+import fi.vincit.mutrproject.service.todo.TodoService;
+import fi.vincit.mutrproject.service.user.UserService;
+import fi.vincit.mutrproject.service.user.model.Role;
+import fi.vincit.mutrproject.service.user.model.User;
 
 /**
  * Example on how to configure users with multiple roles. Uses a custom role
