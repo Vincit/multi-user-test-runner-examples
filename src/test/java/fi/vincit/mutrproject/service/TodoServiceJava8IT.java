@@ -17,7 +17,7 @@ import org.springframework.security.authentication.AuthenticationCredentialsNotF
 import fi.vincit.multiusertest.annotation.TestUsers;
 import fi.vincit.multiusertest.util.LoginRole;
 import fi.vincit.mutrproject.configuration.AbstractConfiguredIT;
-import fi.vincit.mutrproject.domain.TodoList;
+import fi.vincit.mutrproject.service.dto.TodoListDto;
 
 /**
  * Examples how to use advanced assertions with Java 8
@@ -89,7 +89,7 @@ public class TodoServiceJava8IT extends AbstractConfiguredIT {
         logInAs(LoginRole.USER);
 
         authorization().expect(valueOf(() ->
-                        todoService.getTodoLists().stream().map(TodoList::getName).collect(toList()))
+                        todoService.getTodoLists().stream().map(TodoListDto::getName).collect(toList()))
                         .toAssert(value -> assertThat(value, is(Arrays.asList("Test list 2"))),
                                 ifAnyOf("role:ROLE_USER")
                         )

@@ -15,6 +15,8 @@ import fi.vincit.mutrproject.domain.TodoList;
 import fi.vincit.mutrproject.domain.User;
 import fi.vincit.mutrproject.repository.TodoItemRepository;
 import fi.vincit.mutrproject.repository.TodoListRepository;
+import fi.vincit.mutrproject.service.dto.TodoItemDto;
+import fi.vincit.mutrproject.service.dto.TodoListDto;
 
 @Service
 public class TodoService {
@@ -43,7 +45,7 @@ public class TodoService {
         return list.getId();
     }
 
-    public List<TodoList> getTodoLists() {
+    public List<TodoListDto> getTodoLists() {
         final Optional<User> currentUser = userService.getLoggedInUser();
         List<TodoList> todoLists = todoListRepository.findAll();
         if (currentUser.isPresent()) {
@@ -51,20 +53,43 @@ public class TodoService {
                     list -> list.isPublicList()
                             || isOwner(list, currentUser.get())
                             || isAdmin(currentUser.get())
-            ).collect(Collectors.toList());
+            ).map(TodoListDto::new)
+                    .collect(Collectors.toList());
         } else {
-            return todoLists.stream().filter(TodoList::isPublicList).collect(Collectors.toList());
+            return todoLists.stream().filter(TodoList::isPublicList).map(TodoListDto::new)
+                    .collect(Collectors.toList());
         }
     }
 
-    public TodoList getTodoList(long id) {
-        TodoList list = todoListRepository.findOne(id);
-        Optional<User> user = userService.getLoggedInUser();
-        return authorizeRead(list, user);
+    public TodoListDto getTodoList(long id) {
+        return new TodoListDto(getTodoListInternal(id));
     }
 
     @PreAuthorize("isAuthenticated()")
-    public TodoItem getTodoItem(long listId, long id) {
+    public TodoItemDto getTodoItem(long listId, long id) {
+        return new TodoItemDto(getTodoItemInternal(listId, id));
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    public void setItemStatus(long listId, long itemId, boolean done) {
+        TodoItem existingItem = getTodoItemInternal(listId, itemId);
+        authorizeEdit(getTodoListInternal(listId), userService.getLoggedInUser());
+        existingItem.setDone(done);
+        todoItemRepository.save(existingItem);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    public long addItemToList(long listId, String task) {
+        TodoList list = getTodoListInternal(listId);
+
+        Optional<User> user = userService.getLoggedInUser();
+        authorizeEdit(list, user);
+
+        TodoItem item = todoItemRepository.save(new TodoItem(listId, task, false));
+        return item.getId();
+    }
+
+    private TodoItem getTodoItemInternal(long listId, long id) {
         TodoList list = todoListRepository.findOne(listId);
         Optional<User> user = userService.getLoggedInUser();
         authorizeRead(list, user);
@@ -72,28 +97,10 @@ public class TodoService {
         return todoItemRepository.findOne(id);
     }
 
-    @PreAuthorize("isAuthenticated()")
-    public void setItemStatus(long listId, TodoItem item) {
-        setItemStatus(listId, item.getId(), item.isDone());
-    }
-
-    @PreAuthorize("isAuthenticated()")
-    public void setItemStatus(long listId, long itemId, boolean done) {
-        TodoItem existingItem = getTodoItem(listId, itemId);
-        authorizeEdit(getTodoList(listId), userService.getLoggedInUser());
-        existingItem.setDone(done);
-        todoItemRepository.save(existingItem);
-    }
-
-    @PreAuthorize("isAuthenticated()")
-    public long addItemToList(long listId, String task) {
-        TodoList list = getTodoList(listId);
-
+    private TodoList getTodoListInternal(long id) {
+        TodoList list = todoListRepository.findOne(id);
         Optional<User> user = userService.getLoggedInUser();
-        authorizeEdit(list, user);
-
-        TodoItem item = todoItemRepository.save(new TodoItem(listId, task, false));
-        return item.getId();
+        return authorizeRead(list, user);
     }
 
     private TodoList authorizeRead(TodoList list, Optional<User> user) {

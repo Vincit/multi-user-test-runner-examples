@@ -13,7 +13,7 @@ import fi.vincit.multiusertest.annotation.TestUsers;
 import fi.vincit.multiusertest.util.LoginRole;
 import fi.vincit.mutrproject.configuration.AbstractConfiguredIT;
 import fi.vincit.mutrproject.domain.Role;
-import fi.vincit.mutrproject.domain.TodoItem;
+import fi.vincit.mutrproject.service.dto.TodoItemDto;
 
 /**
  * Example how to use existing users
@@ -72,9 +72,8 @@ public class TodoServiceWithUsersIT extends AbstractConfiguredIT {
         logInAs(LoginRole.USER);
         authorization().expect(notToFail(ifAnyOf("role:ROLE_SYSTEM_ADMIN", TestUsers.CREATOR)));
         long itemId = todoService.addItemToList(listId, "Write tests");
-        TodoItem item = todoService.getTodoItem(listId, itemId);
-        item.setDone(true);
-        todoService.setItemStatus(listId, item);
+        TodoItemDto item = todoService.getTodoItem(listId, itemId);
+        todoService.setItemStatus(listId, item.getId(), true);
     }
 
 }

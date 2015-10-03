@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import fi.vincit.mutrproject.domain.TodoItemCommand;
-import fi.vincit.mutrproject.domain.TodoList;
 import fi.vincit.mutrproject.domain.TodoListCommand;
 import fi.vincit.mutrproject.service.TodoService;
+import fi.vincit.mutrproject.service.dto.TodoListDto;
 
 @RestController
 public class TodoController {
@@ -21,12 +21,12 @@ public class TodoController {
     private TodoService todoService;
 
     @RequestMapping(value = "/api/todo/lists", method = RequestMethod.GET)
-    public List<TodoList> getLists() {
+    public List<TodoListDto> getLists() {
         return todoService.getTodoLists();
     }
 
     @RequestMapping(value = "/api/todo/list/{listId}", method = RequestMethod.GET)
-    public TodoList getList(@PathVariable("listId") long id) {
+    public TodoListDto getList(@PathVariable("listId") long id) {
         return todoService.getTodoList(id);
     }
 
