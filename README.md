@@ -9,6 +9,7 @@ Simple example project and example tests.
 
 * [Basic Example with Roles](src/test/java/fi/vincit/mutrproject/feature/todo/TodoServiceIT.java)
 * [Basic Example with Existing Users](src/test/java/fi/vincit/mutrproject/feature/todo/TodoServiceWithUsersIT.java)
+* [Basic Example with TestUsers.NEW_USER](src/test/java/fi/vincit/mutrproject/feature/todo/TodoServiceNewUserIT.java)
 * [Basic Configuration](src/test/java/fi/vincit/mutrproject/configuration/AbstractConfiguredIT.java)
 
 ### REST Assured
