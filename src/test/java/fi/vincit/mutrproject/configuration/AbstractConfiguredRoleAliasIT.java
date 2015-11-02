@@ -50,17 +50,17 @@ public abstract class AbstractConfiguredRoleAliasIT extends AbstractUserRoleIT<U
     private UserService userService;
 
     @Override
-    protected void loginWithUser(User user) {
+    public void loginWithUser(User user) {
         userService.loginUser(user);
     }
 
     @Override
-    protected User createUser(String username, String firstName, String lastName, Role userRole, LoginRole loginRole) {
+    public User createUser(String username, String firstName, String lastName, Role userRole, LoginRole loginRole) {
         return userService.createUser(username, username, userRole);
     }
 
     @Override
-    protected Role stringToRole(String role) {
+    public Role stringToRole(String role) {
         if (role.equals("REGULAR")) {
             return Role.ROLE_USER;
         } else {
@@ -69,7 +69,7 @@ public abstract class AbstractConfiguredRoleAliasIT extends AbstractUserRoleIT<U
     }
 
     @Override
-    protected User getUserByUsername(String username) {
+    public User getUserByUsername(String username) {
         return userService.loadUserByUsername(username);
     }
 }

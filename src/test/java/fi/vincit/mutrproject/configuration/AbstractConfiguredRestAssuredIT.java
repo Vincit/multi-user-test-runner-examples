@@ -71,14 +71,14 @@ public abstract class AbstractConfiguredRestAssuredIT extends AbstractUserRoleIT
     private boolean isAnonymous;
 
     @Override
-    protected void loginWithUser(User user) {
+    public void loginWithUser(User user) {
         username = user.getUsername();
         password = user.getUsername();
         isAnonymous = false;
     }
 
     @Override
-    protected void loginAnonymous() {
+    public void loginAnonymous() {
         username = null;
         password = null;
         isAnonymous = true;
@@ -95,18 +95,18 @@ public abstract class AbstractConfiguredRestAssuredIT extends AbstractUserRoleIT
     }
 
     @Override
-    protected User createUser(String username, String firstName, String lastName, Role userRole, LoginRole loginRole) {
+    public User createUser(String username, String firstName, String lastName, Role userRole, LoginRole loginRole) {
         String password = username;
         return userService.createUser(username, password, userRole);
     }
 
     @Override
-    protected Role stringToRole(String role) {
+    public Role stringToRole(String role) {
         return Role.valueOf(role);
     }
 
     @Override
-    protected User getUserByUsername(String username) {
+    public User getUserByUsername(String username) {
         return userService.loadUserByUsername(username);
     }
 }

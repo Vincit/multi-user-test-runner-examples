@@ -48,27 +48,27 @@ public abstract class AbstractConfiguredIT extends AbstractUserRoleIT<User, Role
     private UserService userService;
 
     @Override
-    protected void loginWithUser(User user) {
+    public void loginWithUser(User user) {
         userService.loginUser(user);
     }
 
     @Override
-    protected void loginAnonymous() {
+    public void loginAnonymous() {
         userService.logout();
     }
 
     @Override
-    protected User createUser(String username, String firstName, String lastName, Role userRole, LoginRole loginRole) {
+    public User createUser(String username, String firstName, String lastName, Role userRole, LoginRole loginRole) {
         return userService.createUser(username, username, userRole);
     }
 
     @Override
-    protected Role stringToRole(String role) {
+    public Role stringToRole(String role) {
         return Role.valueOf(role);
     }
 
     @Override
-    protected User getUserByUsername(String username) {
+    public User getUserByUsername(String username) {
         return userService.loadUserByUsername(username);
     }
 }

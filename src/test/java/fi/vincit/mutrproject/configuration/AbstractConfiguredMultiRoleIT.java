@@ -54,12 +54,12 @@ public abstract class AbstractConfiguredMultiRoleIT extends AbstractUserRoleIT<U
     private UserService userService;
 
     @Override
-    protected void loginWithUser(User user) {
+    public void loginWithUser(User user) {
         userService.loginUser(user);
     }
 
     @Override
-    protected User createUser(String username, String firstName, String lastName, RoleGroup userRole, LoginRole loginRole) {
+    public User createUser(String username, String firstName, String lastName, RoleGroup userRole, LoginRole loginRole) {
         return userService.createUser(username, username, roleGroupToRoles(userRole));
     }
 
@@ -72,12 +72,12 @@ public abstract class AbstractConfiguredMultiRoleIT extends AbstractUserRoleIT<U
     }
 
     @Override
-    protected RoleGroup stringToRole(String role) {
+    public RoleGroup stringToRole(String role) {
         return RoleGroup.valueOf(role);
     }
 
     @Override
-    protected User getUserByUsername(String username) {
+    public User getUserByUsername(String username) {
         return userService.loadUserByUsername(username);
     }
 }
