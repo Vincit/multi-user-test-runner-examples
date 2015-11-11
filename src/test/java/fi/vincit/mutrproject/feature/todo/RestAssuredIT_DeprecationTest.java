@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.jayway.restassured.response.Response;
 
-import fi.vincit.multiusertest.annotation.RunWithUsers;
 import fi.vincit.multiusertest.annotation.TestUsers;
 import fi.vincit.multiusertest.util.LoginRole;
 import fi.vincit.mutrproject.configuration.AbstractConfiguredRestAssuredIT;
@@ -24,12 +23,11 @@ import fi.vincit.mutrproject.feature.user.model.Role;
 /**
  * Example how to use existing users
  */
-@RunWithUsers(
-        producers = {"user:admin", "role:ROLE_ADMIN", "role:ROLE_USER"},
-        consumers = {"role:ROLE_ADMIN", "role:ROLE_USER", "user:user1",
-                RunWithUsers.PRODUCER, RunWithUsers.ANONYMOUS}
+@TestUsers(
+        creators = {"user:admin", "role:ROLE_ADMIN", "role:ROLE_USER"},
+        users = {"role:ROLE_ADMIN", "role:ROLE_USER", "user:user1", TestUsers.CREATOR, TestUsers.ANONYMOUS}
 )
-public class RestAssuredIT extends AbstractConfiguredRestAssuredIT {
+public class RestAssuredIT_DeprecationTest extends AbstractConfiguredRestAssuredIT {
 
     @Autowired
     private TodoService todoService;

@@ -8,16 +8,17 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 
-import fi.vincit.multiusertest.annotation.TestUsers;
+import fi.vincit.multiusertest.annotation.RunWithUsers;
 import fi.vincit.multiusertest.util.LoginRole;
 import fi.vincit.mutrproject.configuration.AbstractConfiguredIT;
 
 /**
  * Basic examples on how to use multi-user-test-runner.
  */
-@TestUsers(
-        creators = {"role:ROLE_SYSTEM_ADMIN", "role:ROLE_ADMIN", "role:ROLE_USER", "role:ROLE_USER"},
-        users = {"role:ROLE_SYSTEM_ADMIN", "role:ROLE_ADMIN", "role:ROLE_USER", TestUsers.CREATOR, TestUsers.ANONYMOUS}
+@RunWithUsers(
+        producers = {"role:ROLE_SYSTEM_ADMIN", "role:ROLE_ADMIN", "role:ROLE_USER", "role:ROLE_USER"},
+        consumers = {"role:ROLE_SYSTEM_ADMIN", "role:ROLE_ADMIN", "role:ROLE_USER",
+                RunWithUsers.PRODUCER, RunWithUsers.ANONYMOUS}
 )
 public class TodoServiceIT extends AbstractConfiguredIT {
 
@@ -27,24 +28,24 @@ public class TodoServiceIT extends AbstractConfiguredIT {
     @Test
     public void getPrivateTodoList() throws Throwable {
         long id = todoService.createTodoList("Test list", false);
-        logInAs(LoginRole.USER);
-        authorization().expect(toFail(ifAnyOf("role:ROLE_USER", TestUsers.ANONYMOUS)));
+        logInAs(LoginRole.CONSUMER);
+        authorization().expect(toFail(ifAnyOf("role:ROLE_USER", RunWithUsers.ANONYMOUS)));
         todoService.getTodoList(id);
     }
 
     @Test
     public void getPublicTodoList() throws Throwable {
         long id = todoService.createTodoList("Test list", true);
-        logInAs(LoginRole.USER);
+        logInAs(LoginRole.CONSUMER);
         todoService.getTodoList(id);
     }
 
     @Test
-    @TestUsers(users = {"role:ROLE_SYSTEM_ADMIN", "role:ROLE_ADMIN", "role:ROLE_USER", TestUsers.CREATOR})
+    @RunWithUsers(consumers = {"role:ROLE_SYSTEM_ADMIN", "role:ROLE_ADMIN", "role:ROLE_USER", RunWithUsers.PRODUCER})
     public void addTodoItem() throws Throwable {
         long listId = todoService.createTodoList("Test list", false);
-        logInAs(LoginRole.USER);
-        authorization().expect(notToFail(ifAnyOf("role:ROLE_ADMIN", "role:ROLE_SYSTEM_ADMIN", TestUsers.CREATOR)));
+        logInAs(LoginRole.CONSUMER);
+        authorization().expect(notToFail(ifAnyOf("role:ROLE_ADMIN", "role:ROLE_SYSTEM_ADMIN", RunWithUsers.PRODUCER)));
         todoService.addItemToList(listId, "Write tests");
     }
 
@@ -53,10 +54,10 @@ public class TodoServiceIT extends AbstractConfiguredIT {
      * @throws Throwable
      */
     @Test(expected = AuthenticationCredentialsNotFoundException.class)
-    @TestUsers(users = TestUsers.ANONYMOUS)
+    @RunWithUsers(consumers = RunWithUsers.ANONYMOUS)
     public void addTodoItemAnonymous() throws Throwable {
         long listId = todoService.createTodoList("Test list", false);
-        logInAs(LoginRole.USER);
+        logInAs(LoginRole.CONSUMER);
         todoService.addItemToList(listId, "Write tests");
     }
 

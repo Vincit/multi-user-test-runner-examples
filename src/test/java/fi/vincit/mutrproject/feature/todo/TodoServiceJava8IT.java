@@ -14,7 +14,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 
-import fi.vincit.multiusertest.annotation.TestUsers;
+import fi.vincit.multiusertest.annotation.RunWithUsers;
 import fi.vincit.multiusertest.util.LoginRole;
 import fi.vincit.mutrproject.configuration.AbstractConfiguredIT;
 import fi.vincit.mutrproject.feature.todo.dto.TodoListDto;
@@ -22,9 +22,10 @@ import fi.vincit.mutrproject.feature.todo.dto.TodoListDto;
 /**
  * Examples how to use advanced assertions with Java 8
  */
-@TestUsers(
-        creators = {"role:ROLE_SYSTEM_ADMIN", "role:ROLE_ADMIN", "role:ROLE_USER"},
-        users = {"role:ROLE_SYSTEM_ADMIN", "role:ROLE_ADMIN", "role:ROLE_USER", TestUsers.CREATOR, TestUsers.ANONYMOUS}
+@RunWithUsers(
+        producers = {"role:ROLE_SYSTEM_ADMIN", "role:ROLE_ADMIN", "role:ROLE_USER"},
+        consumers = {"role:ROLE_SYSTEM_ADMIN", "role:ROLE_ADMIN", "role:ROLE_USER",
+                RunWithUsers.PRODUCER, RunWithUsers.ANONYMOUS}
 )
 public class TodoServiceJava8IT extends AbstractConfiguredIT {
 
@@ -39,30 +40,30 @@ public class TodoServiceJava8IT extends AbstractConfiguredIT {
     @Test
     public void getPrivateTodoList() throws Throwable {
         long id = todoService.createTodoList("Test list", false);
-        logInAs(LoginRole.USER);
+        logInAs(LoginRole.CONSUMER);
         authorization().expect(
                 call(() -> todoService.getTodoList(id))
-                        .toFail(ifAnyOf("role:ROLE_USER", TestUsers.ANONYMOUS))
+                        .toFail(ifAnyOf("role:ROLE_USER", RunWithUsers.ANONYMOUS))
         );
     }
 
     @Test
     public void getPublicTodoList() throws Throwable {
         long id = todoService.createTodoList("Test list", true);
-        logInAs(LoginRole.USER);
+        logInAs(LoginRole.CONSUMER);
         todoService.getTodoList(id);
     }
 
     @Test
     public void addTodoItem() throws Throwable {
         long listId = todoService.createTodoList("Test list", false);
-        logInAs(LoginRole.USER);
+        logInAs(LoginRole.CONSUMER);
 
         authorization().expect(
                 call(() -> todoService.addItemToList(listId, "Write tests"))
                         .toFail(ifAnyOf("role:ROLE_USER"))
                         .toFailWithException(AuthenticationCredentialsNotFoundException.class,
-                                ifAnyOf(TestUsers.ANONYMOUS))
+                                ifAnyOf(RunWithUsers.ANONYMOUS))
         );
     }
 
@@ -72,11 +73,11 @@ public class TodoServiceJava8IT extends AbstractConfiguredIT {
         todoService.createTodoList("Test list 2", true);
         todoService.createTodoList("Test list 3", false);
 
-        logInAs(LoginRole.USER);
+        logInAs(LoginRole.CONSUMER);
 
         authorization().expect(valueOf(() -> todoService.getTodoLists().size())
-                        .toEqual(1, ifAnyOf("role:ROLE_USER", TestUsers.ANONYMOUS))
-                        .toEqual(3, ifAnyOf(TestUsers.CREATOR, "role:ROLE_ADMIN", "role:ROLE_SYSTEM_ADMIN"))
+                        .toEqual(1, ifAnyOf("role:ROLE_USER", RunWithUsers.ANONYMOUS))
+                        .toEqual(3, ifAnyOf(RunWithUsers.PRODUCER, "role:ROLE_ADMIN", "role:ROLE_SYSTEM_ADMIN"))
         );
     }
 
@@ -86,7 +87,7 @@ public class TodoServiceJava8IT extends AbstractConfiguredIT {
         todoService.createTodoList("Test list 2", true);
         todoService.createTodoList("Test list 3", false);
 
-        logInAs(LoginRole.USER);
+        logInAs(LoginRole.CONSUMER);
 
         authorization().expect(valueOf(() ->
                         todoService.getTodoLists().stream().map(TodoListDto::getName).collect(toList()))
@@ -96,7 +97,7 @@ public class TodoServiceJava8IT extends AbstractConfiguredIT {
                         .toAssert(value -> assertThat(value, is(Arrays.asList("Test list 1",
                                         "Test list 2",
                                         "Test list 3"))),
-                                ifAnyOf(TestUsers.CREATOR, "role:ROLE_ADMIN", "role:ROLE_SYSTEM_ADMIN")
+                                ifAnyOf(RunWithUsers.PRODUCER, "role:ROLE_ADMIN", "role:ROLE_SYSTEM_ADMIN")
                         )
         );
     }

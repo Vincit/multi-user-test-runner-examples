@@ -9,7 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import fi.vincit.multiusertest.annotation.TestUsers;
+import fi.vincit.multiusertest.annotation.RunWithUsers;
 import fi.vincit.multiusertest.util.LoginRole;
 import fi.vincit.mutrproject.configuration.AbstractConfiguredIT;
 import fi.vincit.mutrproject.feature.todo.dto.TodoItemDto;
@@ -19,9 +19,9 @@ import fi.vincit.mutrproject.feature.user.model.Role;
 /**
  * Example how to use existing users
  */
-@TestUsers(
-        creators = {"user:admin", "user:user1"},
-        users = {"role:ROLE_SYSTEM_ADMIN", "user:user2", TestUsers.CREATOR}
+@RunWithUsers(
+        producers = {"user:admin", "user:user1"},
+        consumers = {"role:ROLE_SYSTEM_ADMIN", "user:user2", RunWithUsers.PRODUCER}
 )
 public class TodoServiceWithUsersIT extends AbstractConfiguredIT {
 
@@ -46,7 +46,7 @@ public class TodoServiceWithUsersIT extends AbstractConfiguredIT {
     @Test
     public void getPrivateTodoList() throws Throwable {
         long id = todoService.createTodoList("Test list", false);
-        logInAs(LoginRole.USER);
+        logInAs(LoginRole.CONSUMER);
         authorization().expect(toFail(ifAnyOf("user:user2", "role:ROLE_ANONYMOUS")));
         todoService.getTodoList(id);
     }
@@ -54,15 +54,15 @@ public class TodoServiceWithUsersIT extends AbstractConfiguredIT {
     @Test
     public void getPublicTodoList() throws Throwable {
         long id = todoService.createTodoList("Test list", true);
-        logInAs(LoginRole.USER);
+        logInAs(LoginRole.CONSUMER);
         todoService.getTodoList(id);
     }
 
     @Test
     public void addTodoItem() throws Throwable {
         long listId = todoService.createTodoList("Test list", false);
-        logInAs(LoginRole.USER);
-        authorization().expect(notToFail(ifAnyOf("role:ROLE_SYSTEM_ADMIN", TestUsers.CREATOR)));
+        logInAs(LoginRole.CONSUMER);
+        authorization().expect(notToFail(ifAnyOf("role:ROLE_SYSTEM_ADMIN", RunWithUsers.PRODUCER)));
         todoService.addItemToList(listId, "Write tests");
     }
 
@@ -70,8 +70,8 @@ public class TodoServiceWithUsersIT extends AbstractConfiguredIT {
     public void setTaskAsDone() throws Throwable {
         long listId = todoService.createTodoList("Test list", false);
 
-        logInAs(LoginRole.USER);
-        authorization().expect(notToFail(ifAnyOf("role:ROLE_SYSTEM_ADMIN", TestUsers.CREATOR)));
+        logInAs(LoginRole.CONSUMER);
+        authorization().expect(notToFail(ifAnyOf("role:ROLE_SYSTEM_ADMIN", RunWithUsers.PRODUCER)));
         long itemId = todoService.addItemToList(listId, "Write tests");
         TodoItemDto item = todoService.getTodoItem(listId, itemId);
         todoService.setItemStatus(listId, item.getId(), true);
