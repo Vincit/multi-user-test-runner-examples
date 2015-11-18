@@ -12,7 +12,7 @@ import fi.vincit.multiusertest.util.LoginRole;
 import fi.vincit.mutrproject.configuration.AbstractConfiguredIT;
 
 /**
- * Basic examples on how to use multi-user-test-runner with NEW_USER.
+ * Basic examples on how to use multi-user-test-runner with {@link RunWithUsers#WITH_PRODUCER_ROLE}.
  */
 @RunWithUsers(
         producers = {"role:ROLE_SYSTEM_ADMIN", "role:ROLE_ADMIN", "role:ROLE_USER"},
