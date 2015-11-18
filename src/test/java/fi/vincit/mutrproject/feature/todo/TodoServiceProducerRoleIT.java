@@ -18,7 +18,7 @@ import fi.vincit.mutrproject.configuration.AbstractConfiguredIT;
         producers = {"role:ROLE_SYSTEM_ADMIN", "role:ROLE_ADMIN", "role:ROLE_USER"},
         consumers = {RunWithUsers.WITH_PRODUCER_ROLE}
 )
-public class TodoServiceNewUserIT extends AbstractConfiguredIT {
+public class TodoServiceProducerRoleIT extends AbstractConfiguredIT {
 
     @Autowired
     private TodoService todoService;
