@@ -1,10 +1,10 @@
 group 'fi.vincit'
-version '0.4.0-SNAPSHOT'
+version '0.5.0-SNAPSHOT'
 
 apply plugin: 'java'
 apply plugin: 'spring-boot'
 
-def libraryVersion = System.env.MUTR_VERSION ?: "0.4.0-SNAPSHOT"
+def libraryVersion = System.env.MUTR_VERSION ?: "0.5.0-SNAPSHOT"
 
 sourceCompatibility = 1.8
 
@@ -25,7 +25,7 @@ buildscript {
 
 jar {
     baseName = 'myproject'
-    version =  '0.4.0-SNAPSHOT'
+    version =  '0.5.0-SNAPSHOT'
 }
 
 repositories {
