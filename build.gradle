@@ -47,27 +47,3 @@ dependencies {
     testCompile "fi.vincit:multi-user-test-runner-spring:$libraryVersion"
     testCompile 'com.jayway.restassured:rest-assured:2.5.0'
 }
-
-// From Petri Kainnulainen's examples
-// https://github.com/pkainulainen/gradle-examples/blob/master/integration-tests/build.gradle
-
-sourceSets {
-    integrationTest {
-        java {
-            compileClasspath += main.output + test.output
-            runtimeClasspath += main.output + test.output
-            srcDir file('src/test/java')
-        }
-    }
-}
-
-task integrationTest(type: Test) {
-    testClassesDir = sourceSets.integrationTest.output.classesDir
-    classpath = sourceSets.integrationTest.runtimeClasspath
-}
-configurations {
-    integrationTestCompile.extendsFrom testCompile
-    integrationTestRuntime.extendsFrom testRuntime
-}
-check.dependsOn integrationTest
-integrationTest.mustRunAfter test
