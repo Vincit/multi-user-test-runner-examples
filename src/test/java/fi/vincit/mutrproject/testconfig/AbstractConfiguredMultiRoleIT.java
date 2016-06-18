@@ -1,4 +1,4 @@
-package fi.vincit.mutrproject.configuration;
+package fi.vincit.mutrproject.testconfig;
 
 
 import fi.vincit.multiusertest.annotation.MultiUserConfigClass;
@@ -8,22 +8,25 @@ import fi.vincit.multiusertest.runner.junit.MultiUserTestRunner;
 import fi.vincit.multiusertest.runner.junit.framework.SpringMultiUserTestClassRunner;
 import fi.vincit.mutrproject.Application;
 import fi.vincit.mutrproject.config.SecurityConfig;
+import fi.vincit.mutrproject.configuration.RoleGroup;
+import fi.vincit.mutrproject.configuration.TestMultiUserConfig;
 import fi.vincit.mutrproject.util.DatabaseUtil;
 import org.junit.After;
 import org.junit.Rule;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.IntegrationTest;
-import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
-import org.springframework.test.context.web.WebAppConfiguration;
 
 /**
- * Example of basic configuration for Spring projects.
+ * Example on how to configure users with multiple roles. Uses a custom role
+ * {@link RoleGroup} to configure which roles to configure for the user. RoleGroup
+ * can be any enum or object that just defines all the combinations that need to
+ * be tested.
  */
 @TestExecutionListeners({DependencyInjectionTestExecutionListener.class,
         DirtiesContextTestExecutionListener.class,
@@ -31,20 +34,21 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @MultiUserTestConfig(
         runner = SpringMultiUserTestClassRunner.class,
         defaultException = AccessDeniedException.class)
-@SpringApplicationConfiguration(classes = {Application.class, SecurityConfig.class})
-@WebAppConfiguration
-@IntegrationTest("server.port:0")
+@ContextConfiguration(classes = {Application.class, SecurityConfig.class})
 @RunWith(MultiUserTestRunner.class)
-public abstract class AbstractConfiguredRestAssuredIT  {
+public abstract class AbstractConfiguredMultiRoleIT {
+
+    @Autowired
+    private DatabaseUtil databaseUtil;
 
     @Autowired
     @MultiUserConfigClass
-    public TestMultiUserRestConfig config;
+    public TestMultiUserConfig config;
 
     @Rule
     public AuthorizationRule authorizationRule = new AuthorizationRule();
 
-    public TestMultiUserRestConfig config() {
+    public TestMultiUserConfig config() {
         return config;
     }
 
@@ -52,12 +56,10 @@ public abstract class AbstractConfiguredRestAssuredIT  {
         return authorizationRule;
     }
 
+
     @After
     public void clear() {
         databaseUtil.clearDb();
     }
-
-    @Autowired
-    private DatabaseUtil databaseUtil;
 
 }

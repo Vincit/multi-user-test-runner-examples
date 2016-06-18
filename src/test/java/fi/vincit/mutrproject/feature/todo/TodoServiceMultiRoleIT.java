@@ -2,8 +2,8 @@ package fi.vincit.mutrproject.feature.todo;
 
 import fi.vincit.multiusertest.annotation.RunWithUsers;
 import fi.vincit.multiusertest.util.LoginRole;
-import fi.vincit.mutrproject.configuration.AbstractConfiguredMultiRoleIT;
-import fi.vincit.mutrproject.configuration.AbstractConfiguredRoleGroupIT;
+import fi.vincit.mutrproject.testconfig.AbstractConfiguredMultiRoleIT;
+import fi.vincit.mutrproject.testconfig.AbstractConfiguredRoleGroupIT;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

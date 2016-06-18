@@ -1,4 +1,4 @@
-package fi.vincit.mutrproject.configuration;
+package fi.vincit.mutrproject.testconfig;
 
 
 import fi.vincit.multiusertest.annotation.MultiUserConfigClass;
@@ -8,6 +8,7 @@ import fi.vincit.multiusertest.runner.junit.MultiUserTestRunner;
 import fi.vincit.multiusertest.runner.junit.framework.SpringMultiUserTestClassRunner;
 import fi.vincit.mutrproject.Application;
 import fi.vincit.mutrproject.config.SecurityConfig;
+import fi.vincit.mutrproject.configuration.TestMultiUserAliasConfig;
 import fi.vincit.mutrproject.util.DatabaseUtil;
 import org.junit.After;
 import org.junit.Rule;
@@ -21,10 +22,9 @@ import org.springframework.test.context.support.DirtiesContextTestExecutionListe
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
 /**
- * Example on how to configure users with multiple roles. Uses a custom role
- * {@link RoleGroup} to configure which roles to configure for the user. RoleGroup
- * can be any enum or object that just defines all the combinations that need to
- * be tested.
+ * Example configuration that uses role aliases. Coverts role definitions
+ * to roles used by the system under test. See {@link #stringToRole(String)}
+ * method.
  */
 @TestExecutionListeners({DependencyInjectionTestExecutionListener.class,
         DirtiesContextTestExecutionListener.class,
@@ -34,19 +34,19 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
         defaultException = AccessDeniedException.class)
 @ContextConfiguration(classes = {Application.class, SecurityConfig.class})
 @RunWith(MultiUserTestRunner.class)
-public abstract class AbstractConfiguredMultiRoleIT {
+public abstract class AbstractConfiguredRoleAliasIT {
 
     @Autowired
     private DatabaseUtil databaseUtil;
 
     @Autowired
     @MultiUserConfigClass
-    public TestMultiUserConfig config;
+    public TestMultiUserAliasConfig config;
 
     @Rule
     public AuthorizationRule authorizationRule = new AuthorizationRule();
 
-    public TestMultiUserConfig config() {
+    public TestMultiUserAliasConfig config() {
         return config;
     }
 

@@ -2,10 +2,10 @@ package fi.vincit.mutrproject.feature.todo;
 
 import fi.vincit.multiusertest.annotation.RunWithUsers;
 import fi.vincit.multiusertest.util.LoginRole;
-import fi.vincit.mutrproject.configuration.AbstractConfiguredMultiRoleIT;
 import fi.vincit.mutrproject.feature.todo.dto.TodoItemDto;
 import fi.vincit.mutrproject.feature.user.UserService;
 import fi.vincit.mutrproject.feature.user.model.Role;
+import fi.vincit.mutrproject.testconfig.AbstractConfiguredMultiRoleIT;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
