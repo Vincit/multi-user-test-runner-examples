@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import static com.jayway.restassured.RestAssured.given;
 
 public class TestMultiUserRestConfig extends AbstractMultiUserConfig<User, Role> {
-    
+
     @Autowired
     private UserService userService;
 

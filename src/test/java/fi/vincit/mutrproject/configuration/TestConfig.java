@@ -19,4 +19,14 @@ public class TestConfig {
         return new TestMultiUserRestConfig();
     }
 
+    @Bean
+    public TestMultiRoleConfig multiRoleRestConfig() {
+        return new TestMultiRoleConfig();
+    }
+
+    @Bean
+    public TestMultiUserAliasConfig multiUserAliasConfig() {
+        return new TestMultiUserAliasConfig();
+    }
+
 }

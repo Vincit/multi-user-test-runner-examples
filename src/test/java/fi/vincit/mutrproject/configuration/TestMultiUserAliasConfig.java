@@ -8,12 +8,7 @@ import fi.vincit.mutrproject.feature.user.model.User;
 import org.junit.After;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class TestMultiUserAliasConfig extends AbstractMultiUserConfig<User, Role> {
-
-    private static Map<String, User> users = new HashMap<>();
 
     @Autowired
     private UserService userService;
@@ -47,6 +42,6 @@ public class TestMultiUserAliasConfig extends AbstractMultiUserConfig<User, Role
 
     @Override
     public User getUserByUsername(String username) {
-        return users.get(username);
+        return userService.loadUserByUsername(username);
     }
 }
