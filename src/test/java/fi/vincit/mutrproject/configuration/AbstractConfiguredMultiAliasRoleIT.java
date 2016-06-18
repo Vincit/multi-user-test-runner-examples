@@ -34,19 +34,19 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
         defaultException = AccessDeniedException.class)
 @ContextConfiguration(classes = {Application.class, SecurityConfig.class})
 @RunWith(MultiUserTestRunner.class)
-public abstract class AbstractConfiguredMultiRoleIT {
+public abstract class AbstractConfiguredMultiAliasRoleIT {
 
     @Autowired
     private DatabaseUtil databaseUtil;
 
     @Autowired
     @MultiUserConfigClass
-    public TestMultiUserConfig config;
+    public TestMultiUserAliasConfig config;
 
     @Rule
     public AuthorizationRule authorizationRule = new AuthorizationRule();
 
-    public TestMultiUserConfig config() {
+    public TestMultiUserAliasConfig config() {
         return config;
     }
 
