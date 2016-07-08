@@ -6,20 +6,18 @@ import fi.vincit.multiusertest.util.LoginRole;
 import fi.vincit.mutrproject.feature.user.UserService;
 import fi.vincit.mutrproject.feature.user.model.Role;
 import fi.vincit.mutrproject.feature.user.model.User;
-import org.junit.After;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static com.jayway.restassured.RestAssured.given;
 
+/**
+ * Example of basic Spring project system integration tests
+ * using MUTR and REST-assured.
+ */
 public class TestMultiUserRestConfig extends AbstractMultiUserConfig<User, Role> {
 
     @Autowired
     private UserService userService;
-
-    private int port = 80;
-
-    public TestMultiUserRestConfig() {
-    }
 
     private String username;
     private String password;
@@ -39,19 +37,16 @@ public class TestMultiUserRestConfig extends AbstractMultiUserConfig<User, Role>
         isAnonymous = true;
     }
 
+    /**
+     * Helper method for authenticating via REST
+     * @return REST-assured RequestSpecification
+     */
     public RequestSpecification whenAuthenticated() {
         RequestSpecification spec = given();
         if (!isAnonymous) {
             spec = spec.auth().preemptive().basic(username, password);
-        } else {
-            spec = spec;
         }
         return spec.header("Content-Type", "application/json");
-    }
-
-    @After
-    public void tearDown() {
-        userService.logout();
     }
 
     @Override

@@ -38,7 +38,8 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 
 /**
- * Example of basic configuration for Spring project system integration tests.
+ * Example of basic Spring project system integration tests
+ * using MUTR and REST-assured.
  */
 @TestExecutionListeners({DependencyInjectionTestExecutionListener.class,
         DirtiesContextTestExecutionListener.class,
@@ -81,7 +82,8 @@ public class RestAssuredIT {
     }
 
     @After
-    public void clear() {
+    public void tearDown() {
+        userService.logout();
         databaseUtil.clearDb();
     }
 
