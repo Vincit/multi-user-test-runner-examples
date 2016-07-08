@@ -44,6 +44,5 @@ dependencies {
     testCompile("org.springframework.boot:spring-boot-starter-test")
     testCompile group: 'junit', name: 'junit', version: '4.12'
     testCompile "fi.vincit:multi-user-test-runner:$libraryVersion"
-    testCompile "fi.vincit:multi-user-test-runner-spring:$libraryVersion"
     testCompile 'com.jayway.restassured:rest-assured:2.5.0'
 }
