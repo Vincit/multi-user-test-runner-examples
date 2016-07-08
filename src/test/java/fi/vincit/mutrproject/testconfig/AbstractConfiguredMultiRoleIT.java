@@ -8,7 +8,6 @@ import fi.vincit.multiusertest.runner.junit.MultiUserTestRunner;
 import fi.vincit.multiusertest.runner.junit.framework.SpringMultiUserTestClassRunner;
 import fi.vincit.mutrproject.Application;
 import fi.vincit.mutrproject.config.SecurityConfig;
-import fi.vincit.mutrproject.configuration.RoleGroup;
 import fi.vincit.mutrproject.configuration.TestMultiUserConfig;
 import fi.vincit.mutrproject.util.DatabaseUtil;
 import org.junit.After;
@@ -23,10 +22,9 @@ import org.springframework.test.context.support.DirtiesContextTestExecutionListe
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
 /**
- * Example on how to configure users with multiple roles. Uses a custom role
- * {@link RoleGroup} to configure which roles to configure for the user. RoleGroup
- * can be any enum or object that just defines all the combinations that need to
- * be tested.
+ * Basic general configuration class for example tests. Uses a basic
+ * {@link TestMultiUserConfig} to configure how test class role string are
+ * mapped to system roles.
  */
 @TestExecutionListeners({DependencyInjectionTestExecutionListener.class,
         DirtiesContextTestExecutionListener.class,
