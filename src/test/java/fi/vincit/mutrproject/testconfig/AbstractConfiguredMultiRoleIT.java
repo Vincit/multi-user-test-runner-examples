@@ -9,6 +9,7 @@ import fi.vincit.multiusertest.runner.junit.framework.SpringMultiUserTestClassRu
 import fi.vincit.mutrproject.Application;
 import fi.vincit.mutrproject.config.SecurityConfig;
 import fi.vincit.mutrproject.configuration.TestMultiUserConfig;
+import fi.vincit.mutrproject.feature.user.UserService;
 import fi.vincit.mutrproject.util.DatabaseUtil;
 import org.junit.After;
 import org.junit.Rule;
@@ -37,6 +38,9 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 public abstract class AbstractConfiguredMultiRoleIT {
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private DatabaseUtil databaseUtil;
 
     @Autowired
@@ -46,18 +50,18 @@ public abstract class AbstractConfiguredMultiRoleIT {
     @Rule
     public AuthorizationRule authorizationRule = new AuthorizationRule();
 
+    @After
+    public void clear() {
+        userService.logout();
+        databaseUtil.clearDb();
+    }
+
     public TestMultiUserConfig config() {
         return config;
     }
 
     public AuthorizationRule authorization() {
         return authorizationRule;
-    }
-
-
-    @After
-    public void clear() {
-        databaseUtil.clearDb();
     }
 
 }

@@ -12,7 +12,8 @@ import static fi.vincit.multiusertest.rule.Authentication.toFail;
 import static fi.vincit.multiusertest.util.UserIdentifiers.ifAnyOf;
 
 /**
- * Basic examples on how to use multi-user-test-runner.
+ * Basic examples on how to use MUTR. This test demonstrates the usage of
+ * roles and built-in user roles PRODUCER and ANONYMOUS.
  */
 @RunWithUsers(
         producers = {"role:ROLE_SYSTEM_ADMIN", "role:ROLE_ADMIN", "role:ROLE_USER", "role:ROLE_USER"},
@@ -21,14 +22,22 @@ import static fi.vincit.multiusertest.util.UserIdentifiers.ifAnyOf;
 )
 public class TodoServiceIT extends AbstractConfiguredMultiRoleIT {
 
+    // Service under test
     @Autowired
     private TodoService todoService;
 
     @Test
     public void getPrivateTodoList() throws Throwable {
+        // At this point the producer has been logged in automatically
         long id = todoService.createTodoList("Test list", false);
+
+        // Change user to consumer in order to test how getTodoList works
         config().logInAs(LoginRole.CONSUMER);
+
+        // Initialize the assertion rule
         authorization().expect(toFail(ifAnyOf("role:ROLE_USER", RunWithUsers.ANONYMOUS)));
+
+        // Call the method to test
         todoService.getTodoList(id);
     }
 
@@ -36,9 +45,14 @@ public class TodoServiceIT extends AbstractConfiguredMultiRoleIT {
     public void getPublicTodoList() throws Throwable {
         long id = todoService.createTodoList("Test list", true);
         config().logInAs(LoginRole.CONSUMER);
+        // This is expected to succeed for all roles
         todoService.getTodoList(id);
     }
 
+    /**
+     * This test is run for all producers but only for the given consumer roles
+     * @throws Throwable
+     */
     @Test
     @RunWithUsers(consumers = {"role:ROLE_SYSTEM_ADMIN", "role:ROLE_ADMIN", "role:ROLE_USER", RunWithUsers.PRODUCER})
     public void addTodoItem() throws Throwable {
@@ -49,7 +63,8 @@ public class TodoServiceIT extends AbstractConfiguredMultiRoleIT {
     }
 
     /**
-     * See {@link TodoServiceJava8IT} for nicer version
+     * This test is run for all producers but only when the consumer is ANONYMOUS
+     * See {@link TodoServiceJava8IT#addTodoItem()} for more advanced version
      * @throws Throwable
      */
     @Test(expected = AuthenticationCredentialsNotFoundException.class)

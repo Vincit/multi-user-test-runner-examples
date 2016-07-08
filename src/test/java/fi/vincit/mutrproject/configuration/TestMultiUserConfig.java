@@ -5,25 +5,28 @@ import fi.vincit.multiusertest.util.LoginRole;
 import fi.vincit.mutrproject.feature.user.UserService;
 import fi.vincit.mutrproject.feature.user.model.Role;
 import fi.vincit.mutrproject.feature.user.model.User;
-import org.junit.After;
 import org.springframework.beans.factory.annotation.Autowired;
 
+/**
+ * Basic example for configuring MUTR config class. This config class
+ * uses Spring Framework dependency injection to autowire utility bean.
+ *
+ * Basically this class configures:
+ * <ol>
+ *     <li>How to convert test class role definitions (e.g. role:ROLE_ADMIN) to real system used role types whether it is enum, string or something else</li>
+ *     <li>How create new user to the system</li>
+ *     <li>How to login in to the system</li>
+ *     <li>How to get system user by username</li>
+ * </ol>
+ */
 public class TestMultiUserConfig extends AbstractMultiUserConfig<User, Role> {
 
     @Autowired
     private UserService userService;
 
-    public TestMultiUserConfig() {
-    }
-
     @Override
     public void loginWithUser(User user) {
         userService.loginUser(user);
-    }
-
-    @After
-    public void tearDown() {
-        userService.logout();
     }
 
     @Override
